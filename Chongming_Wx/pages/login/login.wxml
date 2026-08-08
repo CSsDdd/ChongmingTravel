@@ -13,12 +13,12 @@
       </button>
 
       <view class="nickname-wrapper">
-        <text class="nickname-label">昵称</text>
+        <text class="nickname-label">登录名</text>
         <input
           class="nickname-input"
           type="nickname"
-          placeholder="请输入昵称"
-          bind:change="onInputChange"
+          placeholder="请输入演示登录名"
+          bind:input="onInputChange"
         />
       </view>
     </block>

@@ -1,4 +1,5 @@
 const defaultAvatarUrl = 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'
+const userRepository = require('../../repositories/user-repository')
 
 Page({
   data: {
@@ -46,9 +47,23 @@ Page({
     })
   },
 
-  enterApp() {
-    wx.switchTab({
-      url: '/pages/discovery/discovery',
-    })
+  async enterApp() {
+    const { nickName, avatarUrl } = this.data.userInfo
+    if (!nickName.trim()) {
+      wx.showToast({ title: '请先输入登录名', icon: 'none' })
+      return
+    }
+
+    try {
+      const user = await userRepository.loginByName({
+        loginName: nickName,
+        displayName: nickName,
+        avatarImageId: avatarUrl,
+      })
+      getApp().globalData.currentUser = user
+      wx.switchTab({ url: '/pages/discovery/discovery' })
+    } catch (error) {
+      wx.showToast({ title: error.message || '登录失败', icon: 'none' })
+    }
   },
 })
