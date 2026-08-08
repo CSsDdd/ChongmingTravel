@@ -1,0 +1,102 @@
+.page {
+  height: 100vh;
+  width: 100vw;
+  padding: 0rpx 24rpx;
+  box-sizing: border-box;
+}
+
+.banner {
+  height: 30vh;
+}
+
+.banner-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24rpx;
+  border-radius: 28rpx;
+  color: #ffffff;
+  background: linear-gradient(135deg, #34694d, #84a772);
+}
+
+.banner-tone-1 {
+  background: linear-gradient(135deg, #376b77, #79a8a8);
+}
+
+.banner-tone-2 {
+  background: linear-gradient(135deg, #875f40, #c49a68);
+}
+
+.banner-title {
+  font-size: 40rpx;
+  font-weight: 700;
+}
+
+.banner-summary {
+  margin-top: 12rpx;
+  font-size: 26rpx;
+}
+
+.section-heading {
+  margin: 34rpx 8rpx 22rpx;
+  font-size: 38rpx;
+  font-weight: 700;
+}
+
+.checkpoint-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 24rpx 0;
+}
+
+.checkpoint-card {
+  width: calc(50% - 12rpx);
+  overflow: hidden;
+  border-radius: 20rpx;
+  background: #ffffff;
+  box-shadow: 0 8rpx 24rpx rgba(42, 65, 49, 0.08);
+}
+
+.image-placeholder {
+  height: 220rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 26rpx;
+  background: linear-gradient(145deg, #779b79, #b6c9a9);
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  padding: 20rpx;
+}
+
+.checkpoint-title {
+  overflow: hidden;
+  font-size: 30rpx;
+  font-weight: 700;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.checkpoint-location {
+  margin-top: 14rpx;
+  overflow: hidden;
+  color: #2f6f4e;
+  font-size: 25rpx;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.checkpoint-tags {
+  margin-top: 8rpx;
+  overflow: hidden;
+  color: #747b75;
+  font-size: 23rpx;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

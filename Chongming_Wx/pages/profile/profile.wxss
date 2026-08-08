@@ -1,0 +1,7 @@
+@import "../favorites/favorites.wxss";
+.page {
+  height: 100vh;
+  width: 100vw;
+  padding: 0rpx 24rpx;
+  box-sizing: border-box;
+}

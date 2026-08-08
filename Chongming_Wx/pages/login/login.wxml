@@ -1,0 +1,40 @@
+<view class="login-page">
+  <text class="brand">崇明探索</text>
+  <text class="motto">{{motto}}</text>
+
+  <view class="userinfo">
+    <block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
+      <button
+        class="avatar-wrapper"
+        open-type="chooseAvatar"
+        bind:chooseavatar="onChooseAvatar"
+      >
+        <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
+      </button>
+
+      <view class="nickname-wrapper">
+        <text class="nickname-label">昵称</text>
+        <input
+          class="nickname-input"
+          type="nickname"
+          placeholder="请输入昵称"
+          bind:change="onInputChange"
+        />
+      </view>
+    </block>
+
+    <block wx:elif="{{!hasUserInfo}}">
+      <button wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile">
+        获取头像昵称
+      </button>
+      <view wx:else>请使用支持用户资料能力的微信版本</view>
+    </block>
+
+    <block wx:else>
+      <image class="profile-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+      <text class="profile-name">{{userInfo.nickName}}</text>
+    </block>
+  </view>
+
+  <button class="enter-button" bindtap="enterApp">进入发现页</button>
+</view>

@@ -1,0 +1,22 @@
+<view wx:if="{{loading}}" class="state-message">正在加载……</view>
+
+<view wx:elif="{{missing}}" class="state-message">没有找到对应的打卡点版本</view>
+
+<scroll-view wx:else class="detail-page" scroll-y>
+  <view class="hero-placeholder">户外探索</view>
+
+  <view class="detail-content">
+    <text class="title">{{checkpoint.title}}</text>
+    <text class="location">{{checkpoint.location.locationName}}</text>
+    <text class="tags">{{checkpoint.tagText}}</text>
+
+    <view class="divider"></view>
+    <text class="section-title">打卡点介绍</text>
+    <text class="description">{{checkpoint.shortText}}</text>
+
+    <view class="actions">
+      <button class="secondary-action" bindtap="addToRoute">加入路线</button>
+      <button class="primary-action" bindtap="createSchedule">创建安排</button>
+    </view>
+  </view>
+</scroll-view>

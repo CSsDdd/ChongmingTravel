@@ -1,0 +1,77 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 56rpx 64rpx;
+}
+
+.brand {
+  color: #2f6f4e;
+  font-size: 56rpx;
+  font-weight: 700;
+}
+
+.motto {
+  margin-top: 20rpx;
+  color: #737a74;
+  font-size: 28rpx;
+}
+
+.userinfo {
+  width: 100%;
+  min-height: 300rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 64rpx;
+}
+
+.avatar-wrapper {
+  width: 128rpx !important;
+  height: 128rpx;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 24rpx;
+}
+
+.avatar,
+.profile-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  border-radius: 24rpx;
+}
+
+.nickname-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-top: 40rpx;
+  padding: 24rpx 28rpx;
+  border-radius: 18rpx;
+  background: #ffffff;
+}
+
+.nickname-label {
+  width: 120rpx;
+  font-size: 28rpx;
+}
+
+.nickname-input {
+  flex: 1;
+  font-size: 28rpx;
+}
+
+.profile-name {
+  margin-top: 20rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+}
+
+.enter-button {
+  width: 100%;
+  margin-top: 56rpx;
+  color: #ffffff;
+  background: #2f6f4e;
+}

@@ -1,0 +1,44 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/discovery/discovery",
+    "pages/favorites/favorites",
+    "pages/profile/profile",
+    "pages/editor/editor",
+    "pages/checkpoint-detail/checkpoint-detail"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "崇明探索",
+    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundColor": "#f5f7f4"
+  },
+  "tabBar": {
+    "color": "#6f756f",
+    "selectedColor": "#2f6f4e",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/discovery/discovery",
+        "text": "发现"
+      },
+      {
+        "pagePath": "pages/favorites/favorites",
+        "text": "收藏"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      },
+      {
+        "pagePath": "pages/editor/editor",
+        "text": "编辑"
+      }
+    ]
+  },
+  "style": "v2",
+  "componentFramework": "glass-easel",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}
