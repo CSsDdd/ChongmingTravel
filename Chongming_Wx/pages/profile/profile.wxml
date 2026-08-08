@@ -1,4 +1,44 @@
-<view class="placeholder">
-  <text class="placeholder-title">我的</text>
-  <text class="placeholder-text">个人资料与活动记录将在这里显示。</text>
+<view class="profile-page">
+  <view wx:if="{{currentUser}}" class="user-card">
+    <image
+      class="user-avatar"
+      src="{{currentUser.avatarImageId}}"
+      mode="aspectFill"
+    />
+    <view class="user-summary">
+      <text class="user-name">{{currentUser.displayName}}</text>
+      <text class="user-id">{{currentUser.id}}</text>
+    </view>
+  </view>
+
+  <view
+    wx:if="{{currentUser}}"
+    class="profile-card"
+    bindtap="onClickProfile"
+    hover-class="card-pressed"
+  >
+    <text class="section-title">个人资料</text>
+
+    <view class="profile-row">
+      <text class="profile-label">年龄阶段</text>
+      <text class="profile-value single-line">{{ageGroupLabel}}</text>
+    </view>
+    <view class="profile-row">
+      <text class="profile-label">技能</text>
+      <text class="profile-value single-line">{{skillText}}</text>
+    </view>
+    <view class="profile-row">
+      <text class="profile-label">兴趣</text>
+      <text class="profile-value single-line">{{interestText}}</text>
+    </view>
+    <view class="bio-row">
+      <text class="profile-label">简介</text>
+      <text class="bio-text">{{bioText}}</text>
+    </view>
+  </view>
+
+  <view wx:elif="{{hasLoadedCurrentUser}}" class="placeholder">
+    <text class="placeholder-title">尚未登录</text>
+    <text class="placeholder-text">请先从登录页选择演示身份。</text>
+  </view>
 </view>

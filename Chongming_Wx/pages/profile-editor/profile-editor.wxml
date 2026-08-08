@@ -1,0 +1,112 @@
+<scroll-view wx:if="{{isLoaded}}" class="editor-page" scroll-y>
+  <view class="form-card">
+    <text class="field-label">年龄阶段</text>
+    <picker
+      mode="selector"
+      range="{{ageGroups}}"
+      range-key="label"
+      value="{{ageIndex}}"
+      bindchange="onAgeChange"
+    >
+      <view class="picker-value">{{ageGroups[ageIndex].label}}</view>
+    </picker>
+  </view>
+
+  <view class="form-card">
+    <text class="field-label">技能</text>
+    <view class="tag-list">
+      <text
+        wx:for="{{skillTags}}"
+        wx:key="*this"
+        class="tag selected-tag"
+        data-kind="skill"
+        data-tag="{{item}}"
+        bindtap="removeTag"
+      >{{item}} ×</text>
+      <text wx:if="{{!skillTags.length}}" class="empty-text">暂未选择</text>
+    </view>
+    <view class="tag-list">
+      <text
+        wx:for="{{availableSkillTags}}"
+        wx:key="*this"
+        class="tag suggestion-tag"
+        data-kind="skill"
+        data-tag="{{item}}"
+        bindtap="addSuggestedTag"
+      >＋ {{item}}</text>
+    </view>
+
+    <view class="custom-tag-row">
+      <input
+        class="tag-input"
+        value="{{skillInput}}"
+        maxlength="12"
+        placeholder="自定义技能"
+        data-kind="skill"
+        bindinput="onTagInput"
+        bindconfirm="addCustomTag"
+      />
+      <button class="tag-button" data-kind="skill" bindtap="addCustomTag">添加</button>
+    </view>
+  </view>
+
+  <view class="form-card">
+    <text class="field-label">兴趣</text>
+    <view class="tag-list">
+      <text
+        wx:for="{{interestTags}}"
+        wx:key="*this"
+        class="tag selected-tag"
+        data-kind="interest"
+        data-tag="{{item}}"
+        bindtap="removeTag"
+      >{{item}} ×</text>
+      <text wx:if="{{!interestTags.length}}" class="empty-text">暂未选择</text>
+    </view>
+
+    <view class="tag-list">
+      <text
+        wx:for="{{availableInterestTags}}"
+        wx:key="*this"
+        class="tag suggestion-tag"
+        data-kind="interest"
+        data-tag="{{item}}"
+        bindtap="addSuggestedTag"
+      >＋ {{item}}</text>
+    </view>
+
+    <view class="custom-tag-row">
+      <input
+        class="tag-input"
+        value="{{interestInput}}"
+        maxlength="12"
+        placeholder="自定义兴趣"
+        data-kind="interest"
+        bindinput="onTagInput"
+        bindconfirm="addCustomTag"
+      />
+      <button class="tag-button" data-kind="interest" bindtap="addCustomTag">添加</button>
+    </view>
+  </view>
+
+  <view class="form-card">
+    <text class="field-label">简介</text>
+    <textarea
+      class="bio-input"
+      value="{{bio}}"
+      maxlength="200"
+      placeholder="简单介绍一下自己"
+      bindinput="onBioInput"
+    />
+    <text class="character-count">{{bio.length}} / 200</text>
+  </view>
+
+  <button
+    class="save-button"
+    loading="{{isSaving}}"
+    disabled="{{isSaving}}"
+    bindtap="saveProfile"
+  >保存个人资料</button>
+</scroll-view>
+
+<view wx:else class="loading-state">正在加载个人资料…</view>

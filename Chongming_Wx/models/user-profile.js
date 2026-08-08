@@ -10,9 +10,8 @@ const AgeGroup = Object.freeze({
  * @typedef {Object} UserProfile
  * @property {string} userId
  * @property {string} ageGroup
- * @property {string[]} skillTagIds
- * @property {string[]} interestTagIds
- * @property {string} signature
+ * @property {string[]} skillTags
+ * @property {string[]} interestTags
  * @property {string} bio
  * @property {number} updatedAtEpochMillis
  */
@@ -25,16 +24,16 @@ function requireUserId(value) {
   return userId
 }
 
-function normalizeTagIds(value) {
+function normalizeTags(value) {
   if (!Array.isArray(value)) {
     return []
   }
 
-  const tagIds = value
-    .filter(tagId => typeof tagId === 'string')
-    .map(tagId => tagId.trim())
+  const tags = value
+    .filter(tag => typeof tag === 'string')
+    .map(tag => tag.trim())
     .filter(Boolean)
-  return [...new Set(tagIds)]
+  return [...new Set(tags)]
 }
 
 function normalizeAgeGroup(value) {
@@ -52,11 +51,8 @@ function createUserProfile(input) {
   return {
     userId: requireUserId(input.userId),
     ageGroup: normalizeAgeGroup(input.ageGroup),
-    skillTagIds: normalizeTagIds(input.skillTagIds),
-    interestTagIds: normalizeTagIds(input.interestTagIds),
-    signature: typeof input.signature === 'string'
-      ? input.signature.trim()
-      : '',
+    skillTags: normalizeTags(input.skillTags),
+    interestTags: normalizeTags(input.interestTags),
     bio: typeof input.bio === 'string' ? input.bio.trim() : '',
     updatedAtEpochMillis: Number.isFinite(input.updatedAtEpochMillis)
       && input.updatedAtEpochMillis >= 0

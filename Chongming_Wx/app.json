@@ -4,6 +4,7 @@
     "pages/discovery/discovery",
     "pages/favorites/favorites",
     "pages/profile/profile",
+    "pages/profile-editor/profile-editor",
     "pages/editor/editor",
     "pages/checkpoint-detail/checkpoint-detail"
   ],

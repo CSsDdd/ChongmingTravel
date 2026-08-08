@@ -60,17 +60,7 @@ async function loginByName({ loginName, displayName, avatarImageId }) {
     if (!user) {
       throw new Error('登录身份对应的用户不存在')
     }
-
-    const updatedUser = createUser({
-      ...user,
-      displayName: displayName || user.displayName,
-      avatarImageId: avatarImageId || user.avatarImageId,
-      updatedAtEpochMillis: Date.now(),
-    })
-    state.users[userIndex] = updatedUser
-    saveState(state)
-    wx.setStorageSync(CURRENT_USER_ID_KEY, updatedUser.id)
-    return clone(updatedUser)
+    return clone(user)
   }
 
   const user = createUser({
