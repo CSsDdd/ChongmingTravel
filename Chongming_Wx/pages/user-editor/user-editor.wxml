@@ -1,0 +1,42 @@
+<view wx:if="{{requiresLogin}}" class="login-required">
+  <text class="login-required-title">尚未登录</text>
+  <text class="login-required-text">登录后才能修改用户信息。</text>
+  <button class="login-button" bindtap="goToLogin">前往登录</button>
+</view>
+
+<view wx:elif="{{isLoaded}}" class="user-editor-page">
+  <view class="editor-card">
+    <text class="field-label">头像</text>
+    <button
+      class="avatar-button"
+      open-type="chooseAvatar"
+      bindchooseavatar="onChooseAvatar"
+    >
+      <image class="avatar-preview" src="{{avatarImageId}}" mode="aspectFill" />
+      <text class="avatar-hint">点击更换头像</text>
+    </button>
+
+    <text class="field-label name-label">用户名</text>
+    <input
+      class="name-input"
+      type="nickname"
+      value="{{displayName}}"
+      maxlength="24"
+      placeholder="请输入展示名称"
+      bindinput="onDisplayNameInput"
+    />
+  </view>
+
+  <button
+    class="save-button"
+    loading="{{isSaving}}"
+    disabled="{{isSaving}}"
+    bindtap="saveBasicInfo"
+  >保存基础信息</button>
+
+  <view class="logout-section">
+    <button class="logout-button" bindtap="logout">退出登录</button>
+  </view>
+</view>
+
+<view wx:else class="loading-state">正在加载用户信息…</view>

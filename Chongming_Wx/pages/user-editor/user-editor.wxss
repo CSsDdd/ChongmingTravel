@@ -1,0 +1,119 @@
+.user-editor-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 24rpx;
+  box-sizing: border-box;
+  background: #f5f7f4;
+}
+
+.editor-card {
+  padding: 32rpx;
+  border-radius: 24rpx;
+  background: #ffffff;
+}
+
+.field-label {
+  display: block;
+  color: #202520;
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.avatar-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 20rpx 0 0;
+  padding: 18rpx;
+  text-align: left;
+  background: #f2f5f1;
+}
+
+.avatar-button::after {
+  border: 0;
+}
+
+.avatar-preview {
+  flex: 0 0 112rpx;
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 56rpx;
+  background: #dfe7dc;
+}
+
+.avatar-hint {
+  margin-left: 24rpx;
+  color: #697169;
+  font-size: 26rpx;
+}
+
+.name-label {
+  margin-top: 32rpx;
+}
+
+.name-input {
+  display: block;
+  margin-top: 16rpx;
+  height: 76rpx;
+  padding: 0 22rpx;
+  border-radius: 16rpx;
+  box-sizing: border-box;
+  color: #202520;
+  font-size: 28rpx;
+  line-height: 76rpx;
+  text-align: left;
+  background: #f2f5f1;
+}
+
+.save-button {
+  margin-top: 28rpx;
+  color: #ffffff;
+  background: #2f6f4e;
+}
+
+.logout-section {
+  margin-top: auto;
+  padding: 80rpx 0 32rpx;
+}
+
+.logout-button {
+  color: #b5443b;
+  background: #ffffff;
+}
+
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  color: #858c85;
+  font-size: 28rpx;
+}
+
+.login-required {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  padding: 48rpx;
+}
+
+.login-required-title {
+  color: #202520;
+  font-size: 36rpx;
+  font-weight: 700;
+}
+
+.login-required-text {
+  margin-top: 16rpx;
+  color: #737a74;
+  font-size: 26rpx;
+}
+
+.login-button {
+  margin-top: 32rpx;
+  color: #ffffff;
+  background: #2f6f4e;
+}

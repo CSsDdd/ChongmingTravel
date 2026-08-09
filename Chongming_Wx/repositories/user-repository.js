@@ -60,6 +60,7 @@ async function loginByName({ loginName, displayName, avatarImageId }) {
     if (!user) {
       throw new Error('登录身份对应的用户不存在')
     }
+    wx.setStorageSync(CURRENT_USER_ID_KEY, user.id)
     return clone(user)
   }
 
@@ -84,9 +85,34 @@ async function findCurrent() {
   return userId ? findById(userId) : null
 }
 
+async function updateBasicInfo(userId, { displayName, avatarImageId }) {
+  const state = loadState()
+  const userIndex = state.users.findIndex(item => item.id === userId)
+  const user = state.users[userIndex]
+  if (!user) {
+    throw new Error('要修改的用户不存在')
+  }
+
+  const updatedUser = createUser({
+    ...user,
+    displayName,
+    avatarImageId: avatarImageId || user.avatarImageId,
+    updatedAtEpochMillis: Date.now(),
+  })
+  state.users[userIndex] = updatedUser
+  saveState(state)
+  return clone(updatedUser)
+}
+
+async function logout() {
+  wx.removeStorageSync(CURRENT_USER_ID_KEY)
+}
+
 module.exports = {
   findAll,
   findById,
   findCurrent,
   loginByName,
+  logout,
+  updateBasicInfo,
 }

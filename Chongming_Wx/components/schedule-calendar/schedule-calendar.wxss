@@ -1,0 +1,69 @@
+:host {
+  display: block;
+}
+
+.calendar-card {
+  margin-top: 24rpx;
+  padding: 32rpx 24rpx 28rpx;
+  border-radius: 24rpx;
+  background: #ffffff;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8rpx 24rpx;
+}
+
+.calendar-heading {
+  color: #202520;
+  font-size: 32rpx;
+  font-weight: 700;
+}
+
+.calendar-month {
+  color: #687068;
+  font-size: 26rpx;
+}
+
+.weekday-row,
+.calendar-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.weekday-label,
+.calendar-cell {
+  width: 14.2857%;
+  text-align: center;
+}
+
+.weekday-label {
+  padding-bottom: 16rpx;
+  color: #8a918a;
+  font-size: 24rpx;
+}
+
+.calendar-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 72rpx;
+}
+
+.day-number {
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 26rpx;
+  color: #303730;
+  font-size: 26rpx;
+  line-height: 52rpx;
+  text-align: center;
+}
+
+.today {
+  color: #ffffff;
+  font-weight: 700;
+  background: #47775a;
+}

@@ -1,5 +1,10 @@
 <view class="profile-page">
-  <view wx:if="{{currentUser}}" class="user-card">
+  <view
+    wx:if="{{currentUser}}"
+    class="user-card"
+    bindtap="onClickUserBasic"
+    hover-class="card-pressed"
+  >
     <image
       class="user-avatar"
       src="{{currentUser.avatarImageId}}"
@@ -37,8 +42,11 @@
     </view>
   </view>
 
-  <view wx:elif="{{hasLoadedCurrentUser}}" class="placeholder">
+  <schedule-calendar wx:if="{{currentUser}}" />
+
+  <view wx:if="{{!currentUser && hasLoadedCurrentUser}}" class="placeholder">
     <text class="placeholder-title">尚未登录</text>
-    <text class="placeholder-text">请先从登录页选择演示身份。</text>
+    <text class="placeholder-text">登录后可以查看和编辑个人资料。</text>
+    <button class="login-button" bindtap="goToLogin">登录演示账号</button>
   </view>
 </view>

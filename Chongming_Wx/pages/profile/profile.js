@@ -47,4 +47,12 @@ Page({
   onClickProfile() {
     wx.navigateTo({ url: '/pages/profile-editor/profile-editor' })
   },
+
+  onClickUserBasic() {
+    wx.navigateTo({ url: '/pages/user-editor/user-editor' })
+  },
+
+  goToLogin() {
+    wx.navigateTo({ url: '/pages/login/login' })
+  },
 })

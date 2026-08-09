@@ -103,3 +103,9 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 4;
 }
+
+.login-button {
+  margin-top: 32rpx;
+  color: #ffffff;
+  background: #2f6f4e;
+}

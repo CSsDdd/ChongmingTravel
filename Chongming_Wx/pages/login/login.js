@@ -61,7 +61,7 @@ Page({
         avatarImageId: avatarUrl,
       })
       getApp().globalData.currentUser = user
-      wx.switchTab({ url: '/pages/discovery/discovery' })
+      wx.switchTab({ url: '/pages/profile/profile' })
     } catch (error) {
       wx.showToast({ title: error.message || '登录失败', icon: 'none' })
     }

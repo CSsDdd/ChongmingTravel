@@ -36,5 +36,5 @@
     </block>
   </view>
 
-  <button class="enter-button" bindtap="enterApp">进入发现页</button>
+  <button class="enter-button" bindtap="enterApp">完成登录</button>
 </view>
