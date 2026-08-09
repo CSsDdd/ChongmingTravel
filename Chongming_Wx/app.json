@@ -4,6 +4,7 @@
     "pages/login/login",
     "pages/favorites/favorites",
     "pages/profile/profile",
+    "pages/schedule/schedule",
     "pages/profile-editor/profile-editor",
     "pages/user-editor/user-editor",
     "pages/editor/editor",

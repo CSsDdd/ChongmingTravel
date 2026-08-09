@@ -1,0 +1,83 @@
+.schedule-page {
+  height: 100vh;
+  padding: 0 24rpx 40rpx;
+  background: #f5f7f4;
+  box-sizing: border-box;
+}
+
+.schedule-section {
+  margin-top: 24rpx;
+  padding: 32rpx 24rpx;
+  border-radius: 24rpx;
+  background: #ffffff;
+}
+
+.schedule-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.schedule-heading {
+  color: #202520;
+  font-size: 32rpx;
+  font-weight: 700;
+}
+
+.schedule-count {
+  color: #7b837c;
+  font-size: 24rpx;
+}
+
+.schedule-card {
+  display: flex;
+  flex-direction: column;
+  margin-top: 24rpx;
+  padding: 24rpx;
+  border-radius: 18rpx;
+  background: #f4f7f2;
+}
+
+.schedule-time {
+  color: #47775a;
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.schedule-title {
+  margin-top: 10rpx;
+  color: #202520;
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.schedule-status {
+  margin-top: 10rpx;
+  color: #747c75;
+  font-size: 24rpx;
+}
+
+.empty-state {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 72rpx 24rpx 56rpx;
+}
+
+.empty-title {
+  color: #39413a;
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.empty-text {
+  margin-top: 14rpx;
+  color: #8a918a;
+  font-size: 24rpx;
+}
+
+.login-button {
+  margin-top: 32rpx;
+  color: #ffffff;
+  background: #2f6f4e;
+}

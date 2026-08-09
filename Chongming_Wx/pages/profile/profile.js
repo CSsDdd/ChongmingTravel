@@ -52,6 +52,10 @@ Page({
     wx.navigateTo({ url: '/pages/user-editor/user-editor' })
   },
 
+  onClickSchedule() {
+    wx.navigateTo({ url: '/pages/schedule/schedule' })
+  },
+
   goToLogin() {
     wx.navigateTo({ url: '/pages/login/login' })
   },

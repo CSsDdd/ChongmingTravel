@@ -1,7 +1,21 @@
 <view class="calendar-card">
   <view class="calendar-header">
     <text class="calendar-heading">安排日历</text>
-    <text class="calendar-month">{{title}}</text>
+    <view class="month-controls">
+      <view
+        wx:if="{{interactive}}"
+        class="month-button"
+        bindtap="onPreviousMonth"
+        hover-class="month-button-pressed"
+      >‹</view>
+      <text class="calendar-month">{{title}}</text>
+      <view
+        wx:if="{{interactive}}"
+        class="month-button"
+        bindtap="onNextMonth"
+        hover-class="month-button-pressed"
+      >›</view>
+    </view>
   </view>
 
   <view class="weekday-row">
@@ -17,10 +31,12 @@
       wx:for="{{cells}}"
       wx:key="key"
       class="calendar-cell"
+      data-date="{{item.date}}"
+      bindtap="onDayTap"
     >
       <text
         wx:if="{{item.inMonth}}"
-        class="day-number {{item.isToday ? 'today' : ''}}"
+        class="day-number {{interactive && item.isSelected ? 'selected' : ''}} {{item.isToday ? 'today' : ''}}"
       >{{item.day}}</text>
     </view>
   </view>
