@@ -1,5 +1,12 @@
 const userRepository = require('../../repositories/user-repository')
 
+function createBasicInfoDraft(data) {
+  return {
+    displayName: data.displayName,
+    avatarImageId: data.avatarImageId,
+  }
+}
+
 Page({
   data: {
     userId: '',
@@ -22,15 +29,46 @@ Page({
       displayName: currentUser.displayName,
       avatarImageId: currentUser.avatarImageId,
       isLoaded: true,
+    }, () => {
+      this.rememberInitialDraft()
     })
   },
 
   onChooseAvatar(e) {
-    this.setData({ avatarImageId: e.detail.avatarUrl })
+    this.setData({ avatarImageId: e.detail.avatarUrl }, () => {
+      this.updateUnsavedWarning()
+    })
   },
 
   onDisplayNameInput(e) {
-    this.setData({ displayName: e.detail.value })
+    this.setData({ displayName: e.detail.value }, () => {
+      this.updateUnsavedWarning()
+    })
+  },
+
+  rememberInitialDraft() {
+    this.initialDraft = JSON.stringify(createBasicInfoDraft(this.data))
+    this.hasUnsavedChanges = false
+  },
+
+  updateUnsavedWarning() {
+    const currentDraft = JSON.stringify(createBasicInfoDraft(this.data))
+    const hasChanges = currentDraft !== this.initialDraft
+    if (hasChanges === this.hasUnsavedChanges) {
+      return
+    }
+
+    this.hasUnsavedChanges = hasChanges
+    if (hasChanges) {
+      wx.enableAlertBeforeUnload({ message: '修改尚未保存，确定离开吗？' })
+      return
+    }
+    wx.disableAlertBeforeUnload()
+  },
+
+  disableUnsavedWarning() {
+    this.hasUnsavedChanges = false
+    wx.disableAlertBeforeUnload()
   },
 
   goToLogin() {
@@ -54,6 +92,7 @@ Page({
       })
       getApp().globalData.currentUser = user
       this.setData({ isSaving: false })
+      this.disableUnsavedWarning()
       wx.showToast({ title: '保存成功', icon: 'success' })
       wx.navigateBack()
     } catch (error) {
@@ -65,7 +104,7 @@ Page({
   async logout() {
     const result = await wx.showModal({
       title: '退出登录',
-      content: '退出后仍会保留该演示用户的数据。',
+      content: '退出后仍会保留用户数据。',
       confirmText: '退出',
       confirmColor: '#b5443b',
     })
@@ -75,6 +114,7 @@ Page({
 
     await userRepository.logout()
     getApp().globalData.currentUser = null
+    this.disableUnsavedWarning()
     wx.reLaunch({ url: '/pages/discovery/discovery' })
   },
 })

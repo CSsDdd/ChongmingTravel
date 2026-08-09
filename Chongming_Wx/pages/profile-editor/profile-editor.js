@@ -25,6 +25,16 @@ function availableTags(suggestions, selectedTags) {
   return suggestions.filter(tag => !selectedTags.includes(tag))
 }
 
+function createProfileDraft(data) {
+  const ageGroup = data.ageGroups[data.ageIndex]
+  return {
+    ageGroup: ageGroup ? ageGroup.value : '',
+    skillTags: data.skillTags,
+    interestTags: data.interestTags,
+    bio: data.bio,
+  }
+}
+
 Page({
   data: {
     userId: '',
@@ -83,11 +93,15 @@ Page({
       ),
       bio: profile.bio,
       isLoaded: true,
+    }, () => {
+      this.rememberInitialDraft()
     })
   },
 
   onAgeChange(e) {
-    this.setData({ ageIndex: Number(e.detail.value) })
+    this.setData({ ageIndex: Number(e.detail.value) }, () => {
+      this.updateUnsavedWarning()
+    })
   },
 
   onTagInput(e) {
@@ -130,6 +144,8 @@ Page({
     this.setData({
       [fields.tags]: nextTags,
       [fields.available]: availableTags(suggestions, nextTags),
+    }, () => {
+      this.updateUnsavedWarning()
     })
     return true
   },
@@ -142,11 +158,40 @@ Page({
     this.setData({
       [fields.tags]: nextTags,
       [fields.available]: availableTags(suggestions, nextTags),
+    }, () => {
+      this.updateUnsavedWarning()
     })
   },
 
   onBioInput(e) {
-    this.setData({ bio: e.detail.value })
+    this.setData({ bio: e.detail.value }, () => {
+      this.updateUnsavedWarning()
+    })
+  },
+
+  rememberInitialDraft() {
+    this.initialDraft = JSON.stringify(createProfileDraft(this.data))
+    this.hasUnsavedChanges = false
+  },
+
+  updateUnsavedWarning() {
+    const currentDraft = JSON.stringify(createProfileDraft(this.data))
+    const hasChanges = currentDraft !== this.initialDraft
+    if (hasChanges === this.hasUnsavedChanges) {
+      return
+    }
+
+    this.hasUnsavedChanges = hasChanges
+    if (hasChanges) {
+      wx.enableAlertBeforeUnload({ message: '修改尚未保存，确定离开吗？' })
+      return
+    }
+    wx.disableAlertBeforeUnload()
+  },
+
+  disableUnsavedWarning() {
+    this.hasUnsavedChanges = false
+    wx.disableAlertBeforeUnload()
   },
 
   async saveProfile() {
@@ -164,6 +209,7 @@ Page({
         bio: this.data.bio,
       })
       this.setData({ isSaving: false })
+      this.disableUnsavedWarning()
       wx.showToast({ title: '保存成功', icon: 'success' })
       wx.navigateBack()
     } catch (error) {
