@@ -1,0 +1,42 @@
+<scroll-view class="schedule-page" scroll-y>
+  <schedule-calendar
+    interactive="{{true}}"
+    selected-date="{{selectedDate}}"
+    binddatechange="onDateChange"
+  />
+
+  <view class="schedule-section">
+    <view class="schedule-header">
+      <text class="schedule-heading">{{selectedDateLabel}}</text>
+      <text wx:if="{{currentUser}}" class="schedule-count">
+        {{schedules.length}}项安排
+      </text>
+    </view>
+
+    <block wx:if="{{currentUser}}">
+      <view
+        wx:for="{{schedules}}"
+        wx:key="id"
+        class="schedule-card"
+      >
+        <text class="schedule-time">{{item.timeText}}</text>
+        <text class="schedule-title">{{item.targetTitle}}</text>
+        <text class="schedule-status">{{item.statusText}}</text>
+      </view>
+
+      <view wx:if="{{!schedules.length}}" class="empty-state">
+        <text class="empty-title">该日期暂无安排</text>
+        <text class="empty-text">之后创建的安排会显示在这里。</text>
+      </view>
+    </block>
+
+    <view
+      wx:if="{{!currentUser && hasLoadedCurrentUser}}"
+      class="empty-state"
+    >
+      <text class="empty-title">登录后查看安排</text>
+      <text class="empty-text">安排数据与演示用户关联。</text>
+      <button class="login-button" bindtap="goToLogin">登录演示账号</button>
+    </view>
+  </view>
+</scroll-view>

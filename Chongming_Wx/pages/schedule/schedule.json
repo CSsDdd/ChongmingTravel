@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "我的安排",
+  "usingComponents": {
+    "schedule-calendar": "/components/schedule-calendar/schedule-calendar"
+  }
+}

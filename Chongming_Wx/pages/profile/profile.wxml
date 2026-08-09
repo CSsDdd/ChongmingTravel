@@ -42,7 +42,13 @@
     </view>
   </view>
 
-  <schedule-calendar wx:if="{{currentUser}}" />
+  <view
+    wx:if="{{currentUser}}"
+    bindtap="onClickSchedule"
+    hover-class="card-pressed"
+  >
+    <schedule-calendar />
+  </view>
 
   <view wx:if="{{!currentUser && hasLoadedCurrentUser}}" class="placeholder">
     <text class="placeholder-title">尚未登录</text>
