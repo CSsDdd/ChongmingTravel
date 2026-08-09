@@ -30,12 +30,12 @@
         "text": "收藏"
       },
       {
-        "pagePath": "pages/profile/profile",
-        "text": "我的"
-      },
-      {
         "pagePath": "pages/editor/editor",
         "text": "编辑"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
       }
     ]
   },
