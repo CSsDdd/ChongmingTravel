@@ -1,0 +1,17 @@
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Editor-local files
+.vscode/
+*.code-workspace
+
+# WeChat DevTools per-user configuration
+Chongming_Wx/project.private.config.json
+
+# Android local state and build output
+Chongming_Android/.gradle/
+Chongming_Android/local.properties
+Chongming_Android/**/build/
+Chongming_Android/.idea/workspace.xml
+Chongming_Android/.idea/shelf/
