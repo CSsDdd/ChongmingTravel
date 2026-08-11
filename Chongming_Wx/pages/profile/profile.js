@@ -1,5 +1,13 @@
 const userRepository = require('../../repositories/user-repository')
 const userProfileRepository = require('../../repositories/user-profile-repository')
+const { findByOwnerAndRange } = require('../../repositories/schedule-repository')
+const {
+  createLocalCalendarGridRange,
+  toLocalDateKey,
+} = require('../../utils/date-time')
+const {
+  createScheduleDateIndicators,
+} = require('../../utils/schedule-date-indicators')
 
 const AGE_GROUP_LABELS = {
   UNDER_12: '12岁以下',
@@ -17,6 +25,7 @@ Page({
     skillText: '未填写',
     interestText: '未填写',
     bioText: '未填写',
+    dateIndicators: [],
     hasLoadedCurrentUser: false,
   },
 
@@ -25,6 +34,15 @@ Page({
     const userProfile = currentUser
       ? await userProfileRepository.findByUserId(currentUser.id)
       : null
+    const calendarDate = toLocalDateKey(new Date())
+    const range = createLocalCalendarGridRange(calendarDate)
+    const monthSchedules = currentUser
+      ? await findByOwnerAndRange(
+        currentUser.id,
+        range.startAtEpochMillis,
+        range.endAtEpochMillis
+      )
+      : []
     this.setData({
       currentUser,
       userProfile,
@@ -40,6 +58,7 @@ Page({
       bioText: userProfile && userProfile.bio
         ? userProfile.bio
         : '未填写',
+      dateIndicators: createScheduleDateIndicators(monthSchedules, range),
       hasLoadedCurrentUser: true,
     })
   },

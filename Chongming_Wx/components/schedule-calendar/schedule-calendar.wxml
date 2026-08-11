@@ -35,9 +35,9 @@
       bindtap="onDayTap"
     >
       <text
-        wx:if="{{item.inMonth}}"
-        class="day-number {{interactive && item.isSelected ? 'selected' : ''}} {{item.isToday ? 'today' : ''}}"
+        class="day-number {{!item.inMonth ? 'outside-month' : ''}} {{interactive && item.isSelected ? 'selected' : ''}} {{item.isToday ? 'today' : ''}}"
       >{{item.day}}</text>
+      <view wx:if="{{item.hasIndicator}}" class="date-indicator"></view>
     </view>
   </view>
 </view>

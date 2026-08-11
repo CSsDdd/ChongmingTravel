@@ -51,6 +51,42 @@ function createLocalDayRange(value) {
   }
 }
 
+function createLocalMonthRange(value) {
+  const dateParts = parseLocalDateKey(value)
+  if (!dateParts) {
+    throw new Error('日期格式必须为 YYYY-MM-DD')
+  }
+
+  const { year, month } = dateParts
+  return {
+    startAtEpochMillis: new Date(year, month - 1, 1).getTime(),
+    endAtEpochMillis: new Date(year, month, 1).getTime(),
+  }
+}
+
+function createLocalCalendarGridRange(value) {
+  const dateParts = parseLocalDateKey(value)
+  if (!dateParts) {
+    throw new Error('日期格式必须为 YYYY-MM-DD')
+  }
+
+  const { year, month } = dateParts
+  const firstDate = new Date(year, month - 1, 1)
+  const leadingCellCount = (firstDate.getDay() + 6) % 7
+  return {
+    startAtEpochMillis: new Date(
+      year,
+      month - 1,
+      1 - leadingCellCount
+    ).getTime(),
+    endAtEpochMillis: new Date(
+      year,
+      month - 1,
+      43 - leadingCellCount
+    ).getTime(),
+  }
+}
+
 function formatLocalDateLabel(value) {
   const dateParts = parseLocalDateKey(value)
   return dateParts
@@ -75,7 +111,9 @@ function moveLocalDateByMonths(value, offset) {
 }
 
 module.exports = {
+  createLocalCalendarGridRange,
   createLocalDayRange,
+  createLocalMonthRange,
   formatLocalDateLabel,
   moveLocalDateByMonths,
   normalizeLocalDateKey,
