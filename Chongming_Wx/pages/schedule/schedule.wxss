@@ -31,6 +31,7 @@
 
 .schedule-card {
   display: flex;
+  min-width: 0;
   flex-direction: column;
   margin-top: 24rpx;
   padding: 24rpx;
@@ -49,6 +50,21 @@
   color: #202520;
   font-size: 30rpx;
   font-weight: 700;
+}
+
+.schedule-note {
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  margin-top: 10rpx;
+  color: #202520;
+  font-size: 26rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.schedule-private-note {
+  color: #8a7462;
 }
 
 .schedule-status {
@@ -80,4 +96,18 @@
   margin-top: 32rpx;
   color: #ffffff;
   background: #2f6f4e;
+}
+
+.add-schedule-button {
+  width: 100%;
+  margin: 32rpx 0 0;
+  border-radius: 16rpx;
+  color: #ffffff;
+  font-size: 28rpx;
+  font-weight: 600;
+  background: #2f6f4e;
+}
+
+.add-schedule-button::after {
+  border: none;
 }

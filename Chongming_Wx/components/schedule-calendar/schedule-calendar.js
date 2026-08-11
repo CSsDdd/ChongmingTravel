@@ -7,25 +7,44 @@ const {
   toLocalDateKey,
 } = require('../../utils/date-time')
 
-function buildCalendarCells(year, month, selectedDate) {
+function createIndicatorCounts(dateIndicators) {
+  const counts = {}
+  if (!Array.isArray(dateIndicators)) {
+    return counts
+  }
+  dateIndicators.forEach(indicator => {
+    if (!indicator || typeof indicator.dateKey !== 'string') {
+      return
+    }
+    const count = Number.isInteger(indicator.count) && indicator.count > 0
+      ? indicator.count
+      : 1
+    counts[indicator.dateKey] = count
+  })
+  return counts
+}
+
+function buildCalendarCells(year, month, selectedDate, dateIndicators) {
   const firstWeekday = new Date(year, month - 1, 1).getDay()
   const leadingCellCount = (firstWeekday + 6) % 7
   const dayCount = new Date(year, month, 0).getDate()
   const todayKey = toLocalDateKey(new Date())
+  const indicatorCounts = createIndicatorCounts(dateIndicators)
 
   return Array.from({ length: CALENDAR_CELL_COUNT }, (_, index) => {
     const day = index - leadingCellCount + 1
     const inMonth = day >= 1 && day <= dayCount
-    const date = inMonth
-      ? `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`
-      : ''
+    const cellDate = new Date(year, month - 1, day)
+    const date = toLocalDateKey(cellDate)
     return {
       key: `calendar-cell-${index}`,
-      day: inMonth ? day : '',
+      day: cellDate.getDate(),
       date,
       inMonth,
       isSelected: date === selectedDate,
-      isToday: date === todayKey,
+      isToday: inMonth && date === todayKey,
+      indicatorCount: indicatorCounts[date] || 0,
+      hasIndicator: Boolean(indicatorCounts[date]),
     }
   })
 }
@@ -41,6 +60,13 @@ Component({
       value: '',
       observer(value) {
         this.refreshCalendar(value)
+      },
+    },
+    dateIndicators: {
+      type: Array,
+      value: [],
+      observer() {
+        this.refreshCalendar(this.properties.selectedDate)
       },
     },
   },
@@ -67,7 +93,12 @@ Component({
         title: `${year}年${month}月`,
         visibleYear: year,
         visibleMonth: month,
-        cells: buildCalendarCells(year, month, selectedDate),
+        cells: buildCalendarCells(
+          year,
+          month,
+          selectedDate,
+          this.properties.dateIndicators
+        ),
       })
     },
 
@@ -77,6 +108,10 @@ Component({
       }
       const { date } = e.currentTarget.dataset
       if (date) {
+        const { year, month } = parseLocalDateKey(date)
+        if (year !== this.data.visibleYear || month !== this.data.visibleMonth) {
+          this.triggerEvent('monthchange', { date, year, month })
+        }
         this.triggerEvent('datechange', { date })
       }
     },
@@ -97,6 +132,8 @@ Component({
         this.properties.selectedDate
       )
       const nextDate = moveLocalDateByMonths(selectedDate, offset)
+      const { year, month } = parseLocalDateKey(nextDate)
+      this.triggerEvent('monthchange', { date: nextDate, year, month })
       this.triggerEvent('datechange', { date: nextDate })
     },
   },

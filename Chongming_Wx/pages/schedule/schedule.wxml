@@ -2,7 +2,9 @@
   <schedule-calendar
     interactive="{{true}}"
     selected-date="{{selectedDate}}"
+    date-indicators="{{dateIndicators}}"
     binddatechange="onDateChange"
+    bindmonthchange="onMonthChange"
   />
 
   <view class="schedule-section">
@@ -18,9 +20,20 @@
         wx:for="{{schedules}}"
         wx:key="id"
         class="schedule-card"
+        data-schedule-id="{{item.id}}"
+        bindtap="goToScheduleEditor"
       >
         <text class="schedule-time">{{item.timeText}}</text>
         <text class="schedule-title">{{item.targetTitle}}</text>
+        <text wx:if="{{item.sharedNote}}" class="schedule-note">
+          公开：{{item.sharedNote}}
+        </text>
+        <text
+          wx:if="{{item.canViewPrivateNote && item.privateNote}}"
+          class="schedule-note schedule-private-note"
+        >
+          仅自己可见：{{item.privateNote}}
+        </text>
         <text class="schedule-status">{{item.statusText}}</text>
       </view>
 
@@ -28,6 +41,10 @@
         <text class="empty-title">该日期暂无安排</text>
         <text class="empty-text">之后创建的安排会显示在这里。</text>
       </view>
+
+      <button class="add-schedule-button" bindtap="goToScheduleEditor">
+        添加安排
+      </button>
     </block>
 
     <view

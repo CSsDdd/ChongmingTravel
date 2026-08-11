@@ -47,7 +47,7 @@
     bindtap="onClickSchedule"
     hover-class="card-pressed"
   >
-    <schedule-calendar />
+    <schedule-calendar date-indicators="{{dateIndicators}}" />
   </view>
 
   <view wx:if="{{!currentUser && hasLoadedCurrentUser}}" class="placeholder">

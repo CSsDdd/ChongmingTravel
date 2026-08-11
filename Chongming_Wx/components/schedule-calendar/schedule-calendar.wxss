@@ -77,9 +77,21 @@
 
 .calendar-cell {
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: center;
   height: 72rpx;
+}
+
+.date-indicator {
+  position: absolute;
+  bottom: 3rpx;
+  left: 50%;
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background: #6e9a79;
+  transform: translateX(-50%);
 }
 
 .day-number {
@@ -90,6 +102,10 @@
   font-size: 26rpx;
   line-height: 52rpx;
   text-align: center;
+}
+
+.outside-month {
+  color: #c5cac5;
 }
 
 .selected {
