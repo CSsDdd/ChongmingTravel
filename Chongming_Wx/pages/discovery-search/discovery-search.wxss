@@ -95,6 +95,13 @@ page {
   gap: 24rpx 0;
 }
 
+.empty-state {
+  padding: 96rpx 24rpx;
+  color: #747b75;
+  font-size: 27rpx;
+  text-align: center;
+}
+
 .checkpoint-card {
   width: calc(50% - 12rpx);
   overflow: hidden;

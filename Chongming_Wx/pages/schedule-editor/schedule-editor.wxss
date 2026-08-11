@@ -42,6 +42,10 @@
   background: #f4f7f2;
 }
 
+.select-field-disabled {
+  opacity: 0.65;
+}
+
 .select-content,
 .setting-copy {
   display: flex;

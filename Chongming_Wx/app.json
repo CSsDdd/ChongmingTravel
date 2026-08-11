@@ -9,7 +9,9 @@
     "pages/profile-editor/profile-editor",
     "pages/user-editor/user-editor",
     "pages/editor/editor",
-    "pages/checkpoint-detail/checkpoint-detail"
+    "pages/checkpoint-detail/checkpoint-detail",
+    "pages/discovery-search/discovery-search",
+    "pages/checkpoint-picker/checkpoint-picker"
   ],
   "window": {
     "navigationBarTextStyle": "black",
