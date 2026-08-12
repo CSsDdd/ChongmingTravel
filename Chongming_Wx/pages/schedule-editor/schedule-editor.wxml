@@ -5,13 +5,13 @@
     <view class="form-section">
       <text class="section-title">安排目标</text>
       <view
-        class="select-field {{mode === 'edit' ? 'select-field-disabled' : ''}}"
+        class="select-field"
         bindtap="openCheckpointPicker"
       >
         <view class="select-content">
           <text class="select-value">{{selectedTargetTitle}}</text>
           <text class="field-hint">
-            {{mode === 'edit' ? '已有安排暂不支持更换目标' : '当前阶段仅支持打卡点'}}
+            当前阶段仅支持打卡点          
           </text>
         </view>
         <text wx:if="{{mode === 'create'}}" class="select-arrow">›</text>

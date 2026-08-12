@@ -106,7 +106,7 @@
   font-weight: 700;
 }
 
-.login-required-text {
+.log-required-text {
   margin-top: 16rpx;
   color: #737a74;
   font-size: 26rpx;
