@@ -1,30 +1,40 @@
-<scroll-view class="page" scroll-y>
-  <swiper class="banner" indicator-dots circular autoplay interval="4500">
-    <swiper-item wx:for="{{banners}}" wx:key="id">
-      <view class="banner-card banner-tone-{{index}}">
-        <text class="banner-title">{{item.title}}</text>
-        <text class="banner-summary">{{item.summary}}</text>
-      </view>
-    </swiper-item>
-  </swiper>
-
-  <view class="section-heading">推荐打卡点</view>
-
-  <view class="checkpoint-grid">
-    <view
-      class="checkpoint-card"
-      wx:for="{{checkpoints}}"
-      wx:key="checkpointId"
-      data-id="{{item.checkpointId}}"
-      data-version="{{item.version}}"
-      bindtap="openCheckpoint"
-    >
-      <view class="image-placeholder">户外探索</view>
-      <view class="card-content">
-        <text class="checkpoint-title">{{item.title}}</text>
-        <text class="checkpoint-location">{{item.location.locationName}}</text>
-        <text class="checkpoint-tags">{{item.tagText}}</text>
-      </view>
+<view class="discovery-page">
+  <view class="search-header">
+    <view class="search-entry" bindtap="openCheckpointSearch">
+      <text class="search-icon">⌕</text>
+      <text class="search-placeholder">搜索打卡点</text>
+      <text class="search-arrow">›</text>
     </view>
   </view>
-</scroll-view>
+
+  <scroll-view class="discovery-content" scroll-y>
+    <swiper class="banner" indicator-dots circular autoplay interval="4500">
+      <swiper-item wx:for="{{banners}}" wx:key="id">
+        <view class="banner-card banner-tone-{{index}}">
+          <text class="banner-title">{{item.title}}</text>
+          <text class="banner-summary">{{item.summary}}</text>
+        </view>
+      </swiper-item>
+    </swiper>
+
+    <view class="section-heading">推荐打卡点</view>
+
+    <view class="checkpoint-grid">
+      <view
+        class="checkpoint-card"
+        wx:for="{{checkpoints}}"
+        wx:key="checkpointId"
+        data-id="{{item.checkpointId}}"
+        data-version="{{item.version}}"
+        bindtap="openCheckpoint"
+      >
+        <view class="image-placeholder">户外探索</view>
+        <view class="card-content">
+          <text class="checkpoint-title">{{item.title}}</text>
+          <text class="checkpoint-location">{{item.location.locationName}}</text>
+          <text class="checkpoint-tags">{{item.tagText}}</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

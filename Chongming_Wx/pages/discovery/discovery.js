@@ -12,6 +12,12 @@ Page({
     this.setData({ checkpoints })
   },
 
+  openCheckpointSearch() {
+    wx.navigateTo({
+      url: '/pages/discovery-search/discovery-search',
+    })
+  },
+
   openCheckpoint(e) {
     const { id, version } = e.currentTarget.dataset
     wx.navigateTo({

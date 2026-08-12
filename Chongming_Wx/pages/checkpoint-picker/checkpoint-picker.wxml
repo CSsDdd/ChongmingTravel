@@ -1,0 +1,34 @@
+<view class="picker-page">
+  <view class="search-header">
+    <input
+      class="search-entry"
+      value="{{query.text}}"
+      bindinput="handleInput"
+      placeholder="搜索打卡点"
+    />
+  </view>
+
+  <scroll-view class="picker-content" scroll-y>
+    <view wx:if="{{checkpoints.length === 0}}" class="empty-state">
+      没有找到相关打卡点
+    </view>
+
+    <view class="checkpoint-grid">
+      <view
+        class="checkpoint-card"
+        wx:for="{{checkpoints}}"
+        wx:key="checkpointId"
+        data-id="{{item.checkpointId}}"
+        data-version="{{item.version}}"
+        data-title="{{item.title}}"
+        bindtap="selectCheckpoint"
+      >
+        <view class="card-content">
+          <text class="checkpoint-title">{{item.title}}</text>
+          <text class="checkpoint-location">{{item.location.locationName}}</text>
+          <text class="checkpoint-tags">{{item.tagText}}</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

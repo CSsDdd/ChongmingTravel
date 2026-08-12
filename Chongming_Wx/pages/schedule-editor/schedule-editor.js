@@ -68,8 +68,6 @@ Page({
     mode: 'create',
     scheduleId: '',
     currentUser: null,
-    targetOptions: [],
-    targetIndex: -1,
     targetRef: null,
     selectedTargetTitle: '请选择打卡点',
     startDate: '',
@@ -105,44 +103,34 @@ Page({
 
   async initializeEditor(mode, options) {
     try {
-      const [currentUser, checkpoints] = await Promise.all([
-        userRepository.findCurrent(),
-        checkpointRepository.findPublished(),
-      ])
+      const currentUser = await userRepository.findCurrent()
       if (!currentUser) {
         throw new Error('请先登录后再编辑安排')
       }
 
-      const targetOptions = checkpoints.map(item => ({
-        id: item.checkpointId,
-        version: item.version,
-        title: item.title,
-        locationName: item.location.locationName,
-      }))
       if (mode === 'edit') {
-        await this.loadExistingSchedule(options.scheduleId, currentUser, targetOptions)
+        await this.loadExistingSchedule(options.scheduleId, currentUser)
         return
       }
-      this.loadNewSchedule(options.date, currentUser, targetOptions)
+      this.loadNewSchedule(options.date, currentUser)
     } catch (error) {
       wx.showToast({ title: error.message || '安排加载失败', icon: 'none' })
       this.setData({ isLoading: false })
     }
   },
 
-  loadNewSchedule(date, currentUser, targetOptions) {
+  loadNewSchedule(date, currentUser) {
     const selectedDate = normalizeLocalDateKey(date)
     this.setData({
       mode: 'create',
       currentUser,
-      targetOptions,
       startDate: selectedDate,
       endDate: selectedDate,
       isLoading: false,
     }, () => this.rememberInitialDraft())
   },
 
-  async loadExistingSchedule(scheduleId, currentUser, targetOptions) {
+  async loadExistingSchedule(scheduleId, currentUser) {
     const schedule = await scheduleRepository.findById(scheduleId)
     if (!schedule || schedule.ownerUserId !== currentUser.id) {
       throw new Error('没有找到可编辑的安排')
@@ -151,11 +139,11 @@ Page({
       throw new Error('当前版本暂不支持编辑路线安排')
     }
 
-    const targetIndex = targetOptions.findIndex(item => (
-      item.id === schedule.targetRef.id
-      && item.version === schedule.targetRef.version
-    ))
-    if (targetIndex < 0) {
+    const target = await checkpointRepository.findVersion(
+      schedule.targetRef.id,
+      schedule.targetRef.version
+    )
+    if (!target) {
       throw new Error('安排引用的打卡点版本当前不可用')
     }
 
@@ -165,10 +153,8 @@ Page({
       mode: 'edit',
       scheduleId: schedule.id,
       currentUser,
-      targetOptions,
-      targetIndex,
       targetRef: schedule.targetRef,
-      selectedTargetTitle: targetOptions[targetIndex].title,
+      selectedTargetTitle: target.title,
       startDate: toLocalDateKey(startDateTime),
       startTime: toLocalTimeKey(startDateTime),
       endDate: toLocalDateKey(endDateTime),
@@ -188,18 +174,26 @@ Page({
     }, () => this.rememberInitialDraft())
   },
 
-  onTargetChange(e) {
-    const targetIndex = Number(e.detail.value)
-    const target = this.data.targetOptions[targetIndex]
-    this.setData({
-      targetIndex,
-      targetRef: {
-        type: ScheduleTargetType.CHECKPOINT,
-        id: target.id,
-        version: target.version,
+  openCheckpointPicker() {
+    if (this.data.mode !== 'create') {
+      return
+    }
+
+    wx.navigateTo({
+      url: '/pages/checkpoint-picker/checkpoint-picker',
+      events: {
+        checkpointSelected: checkpoint => {
+          this.setData({
+            targetRef: {
+              type: ScheduleTargetType.CHECKPOINT,
+              id: checkpoint.id,
+              version: checkpoint.version,
+            },
+            selectedTargetTitle: checkpoint.title,
+          }, () => this.updateUnsavedWarning())
+        },
       },
-      selectedTargetTitle: target.title,
-    }, () => this.updateUnsavedWarning())
+    })
   },
 
   onDateOrTimeChange(e) {
