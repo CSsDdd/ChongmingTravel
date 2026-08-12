@@ -175,9 +175,6 @@ Page({
   },
 
   openCheckpointPicker() {
-    if (this.data.mode !== 'create') {
-      return
-    }
 
     wx.navigateTo({
       url: '/pages/checkpoint-picker/checkpoint-picker',
