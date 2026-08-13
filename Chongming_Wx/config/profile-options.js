@@ -1,4 +1,5 @@
-const ageGroups = [
+// 个人资料编辑使用的静态选项，不进入本地 Storage。
+const ageGroupOptions = [
   { value: 'UNDISCLOSED', label: '未填写' },
   { value: 'UNDER_12', label: '12岁以下' },
   { value: 'AGE_12_TO_15', label: '12至15岁' },
@@ -6,7 +7,7 @@ const ageGroups = [
   { value: 'ADULT', label: '成年人' },
 ]
 
-const skillTags = [
+const skillTagOptions = [
   '摄影',
   '路线规划',
   '户外急救',
@@ -22,7 +23,7 @@ const skillTags = [
   '思齐王',
 ]
 
-const interestTags = [
+const interestTagOptions = [
   '湿地',
   '森林',
   '露营',
@@ -40,7 +41,7 @@ const interestTags = [
 ]
 
 module.exports = {
-  ageGroups,
-  interestTags,
-  skillTags,
+  ageGroupOptions,
+  interestTagOptions,
+  skillTagOptions,
 }

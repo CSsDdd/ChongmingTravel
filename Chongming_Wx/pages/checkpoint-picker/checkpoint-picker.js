@@ -1,4 +1,5 @@
 const checkpointRepository = require('../../repositories/checkpoint-repository')
+const { withImageUrl } = require('../../utils/local-media')
 
 Page({
   data: {
@@ -26,8 +27,15 @@ Page({
   },
 
   async search(query) {
-    const checkpoints = await checkpointRepository.searchPublished(query)
+    const checkpoints = (await checkpointRepository.searchPublished(query)).map(
+      withImageUrl
+    )
     this.setData({ checkpoints })
+  },
+
+  onCheckpointImageError(e) {
+    const index = Number(e.currentTarget.dataset.index)
+    this.setData({ [`checkpoints[${index}].imageUrl`]: '' })
   },
 
   selectCheckpoint(e) {

@@ -55,6 +55,25 @@ page {
   box-shadow: 0 8rpx 24rpx rgba(42, 65, 49, 0.08);
 }
 
+.checkpoint-image,
+.image-placeholder {
+  width: 100%;
+  height: 220rpx;
+}
+
+.checkpoint-image {
+  display: block;
+}
+
+.image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 26rpx;
+  background: linear-gradient(145deg, #779b79, #b6c9a9);
+}
+
 .card-content {
   display: flex;
   flex-direction: column;

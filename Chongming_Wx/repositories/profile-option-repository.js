@@ -1,11 +1,11 @@
-const sampleProfileOptions = require('../data/sample-profile-options')
+const profileOptions = require('../config/profile-options')
 
 function clone(value) {
   return JSON.parse(JSON.stringify(value))
 }
 
 async function findAgeGroups() {
-  return clone(sampleProfileOptions.ageGroups)
+  return clone(profileOptions.ageGroupOptions)
 }
 
 function sampleTags(tags, { limit = 5, exclude = [] } = {}) {
@@ -25,11 +25,11 @@ function sampleTags(tags, { limit = 5, exclude = [] } = {}) {
 }
 
 async function findSuggestedSkillTags(options) {
-  return sampleTags(sampleProfileOptions.skillTags, options)
+  return sampleTags(profileOptions.skillTagOptions, options)
 }
 
 async function findSuggestedInterestTags(options) {
-  return sampleTags(sampleProfileOptions.interestTags, options)
+  return sampleTags(profileOptions.interestTagOptions, options)
 }
 
 module.exports = {

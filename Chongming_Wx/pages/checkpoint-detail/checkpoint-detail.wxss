@@ -2,8 +2,17 @@
   height: 100vh;
 }
 
+.hero-image,
 .hero-placeholder {
   height: 420rpx;
+  width: 100%;
+}
+
+.hero-image {
+  display: block;
+}
+
+.hero-placeholder {
   display: flex;
   align-items: center;
   justify-content: center;

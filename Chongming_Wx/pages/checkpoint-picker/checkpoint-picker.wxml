@@ -23,6 +23,15 @@
         data-title="{{item.title}}"
         bindtap="selectCheckpoint"
       >
+        <image
+          wx:if="{{item.imageUrl}}"
+          class="checkpoint-image"
+          src="{{item.imageUrl}}"
+          mode="aspectFill"
+          data-index="{{index}}"
+          binderror="onCheckpointImageError"
+        />
+        <view wx:else class="image-placeholder">户外探索</view>
         <view class="card-content">
           <text class="checkpoint-title">{{item.title}}</text>
           <text class="checkpoint-location">{{item.location.locationName}}</text>

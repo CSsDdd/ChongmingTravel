@@ -9,6 +9,7 @@
     "pages/profile-editor/profile-editor",
     "pages/user-editor/user-editor",
     "pages/editor/editor",
+    "pages/checkpoint-editor/checkpoint-editor",
     "pages/checkpoint-detail/checkpoint-detail",
     "pages/discovery-search/discovery-search",
     "pages/checkpoint-picker/checkpoint-picker"
@@ -19,6 +20,14 @@
     "navigationBarBackgroundColor": "#ffffff",
     "backgroundColor": "#f5f7f4"
   },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于选择和记录打卡点的位置"
+    }
+  },
+  "requiredPrivateInfos": [
+    "chooseLocation"
+  ],
   "tabBar": {
     "color": "#6f756f",
     "selectedColor": "#2f6f4e",

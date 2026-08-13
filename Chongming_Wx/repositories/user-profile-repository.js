@@ -1,4 +1,6 @@
-const sampleUserProfiles = require('../data/sample-user-profiles')
+const {
+  createInitialUserProfiles,
+} = require('../data/seeds/user-profile-seed')
 const { createUserProfile } = require('../models/user-profile')
 const userRepository = require('./user-repository')
 
@@ -12,7 +14,7 @@ function loadProfiles() {
   const storedProfiles = wx.getStorageSync(STORAGE_KEY)
   return Array.isArray(storedProfiles)
     ? storedProfiles
-    : clone(sampleUserProfiles)
+    : createInitialUserProfiles()
 }
 
 function saveProfiles(profiles) {

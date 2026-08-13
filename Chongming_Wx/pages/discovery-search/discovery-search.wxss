@@ -110,8 +110,17 @@ page {
   box-shadow: 0 8rpx 24rpx rgba(42, 65, 49, 0.08);
 }
 
+.checkpoint-image,
 .image-placeholder {
   height: 220rpx;
+  width: 100%;
+}
+
+.checkpoint-image {
+  display: block;
+}
+
+.image-placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
