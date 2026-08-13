@@ -5,6 +5,7 @@ const ScheduleTargetType = Object.freeze({
 
 const SchedulePlanningStatus = Object.freeze({
   CONFIRMED: 'CONFIRMED',
+  INTERESTED: 'INTERESTED',
   COMPLETED: 'COMPLETED',
   CANCELLED: 'CANCELLED',
 })
@@ -98,14 +99,18 @@ function normalizeOptionalText(value) {
   return text || null
 }
 
+function canScheduleRecruit(planningStatus, visibility) {
+  const hasActiveIntent = (
+    planningStatus === SchedulePlanningStatus.CONFIRMED
+    || planningStatus === SchedulePlanningStatus.INTERESTED
+  )
+  return hasActiveIntent && visibility !== ScheduleVisibility.PRIVATE
+}
+
 function validateStateCombination(planningStatus, recruitmentStatus, visibility) {
-  if (visibility === ScheduleVisibility.PRIVATE
-    && recruitmentStatus === ScheduleRecruitmentStatus.RECRUITING) {
-    throw new Error('私密安排不能公开招募')
-  }
-  if (planningStatus !== SchedulePlanningStatus.CONFIRMED
-    && recruitmentStatus === ScheduleRecruitmentStatus.RECRUITING) {
-    throw new Error('已结束或取消的安排不能继续招募')
+  if (recruitmentStatus === ScheduleRecruitmentStatus.RECRUITING
+    && !canScheduleRecruit(planningStatus, visibility)) {
+    throw new Error('当前安排状态或可见性不允许招募')
   }
 }
 
@@ -178,6 +183,7 @@ module.exports = {
   ScheduleRecruitmentStatus,
   ScheduleTargetType,
   ScheduleVisibility,
+  canScheduleRecruit,
   createSchedule,
   createScheduleTargetRef,
 }

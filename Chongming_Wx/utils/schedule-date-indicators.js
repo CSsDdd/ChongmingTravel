@@ -1,4 +1,5 @@
 const { toLocalDateKey } = require('./date-time')
+const { SchedulePlanningStatus } = require('../models/schedule')
 
 function createLocalDayStart(epochMillis) {
   const date = new Date(epochMillis)
@@ -23,8 +24,18 @@ function createScheduleDateIndicators(schedules, range) {
     return []
   }
 
-  const countsByDate = {}
+  const indicatorsByDate = {}
   schedules.forEach(schedule => {
+    const isConfirmed = (
+      schedule.planningStatus === SchedulePlanningStatus.CONFIRMED
+    )
+    const isInterested = (
+      schedule.planningStatus === SchedulePlanningStatus.INTERESTED
+    )
+    if (!isConfirmed && !isInterested) {
+      return
+    }
+
     const clippedStart = Math.max(
       schedule.startAtEpochMillis,
       range.startAtEpochMillis
@@ -42,16 +53,23 @@ function createScheduleDateIndicators(schedules, range) {
     let dayStart = createLocalDayStart(clippedStart)
     while (dayStart < clippedEnd) {
       const dateKey = toLocalDateKey(new Date(dayStart))
-      countsByDate[dateKey] = (countsByDate[dateKey] || 0) + 1
+      const current = indicatorsByDate[dateKey] || {
+        confirmedCount: 0,
+        interestedCount: 0,
+      }
+      indicatorsByDate[dateKey] = {
+        confirmedCount: current.confirmedCount + (isConfirmed ? 1 : 0),
+        interestedCount: current.interestedCount + (isInterested ? 1 : 0),
+      }
       dayStart = moveToNextLocalDay(dayStart)
     }
   })
 
-  return Object.keys(countsByDate)
+  return Object.keys(indicatorsByDate)
     .sort()
     .map(dateKey => ({
       dateKey,
-      count: countsByDate[dateKey],
+      ...indicatorsByDate[dateKey],
     }))
 }
 

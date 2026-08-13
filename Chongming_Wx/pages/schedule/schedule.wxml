@@ -19,7 +19,7 @@
       <view
         wx:for="{{schedules}}"
         wx:key="id"
-        class="schedule-card"
+        class="schedule-card schedule-card-{{item.statusClass}}"
         data-schedule-id="{{item.id}}"
         bindtap="goToScheduleEditor"
       >
@@ -34,7 +34,9 @@
         >
           仅自己可见：{{item.privateNote}}
         </text>
-        <text class="schedule-status">{{item.statusText}}</text>
+        <text class="schedule-status schedule-status-{{item.statusClass}}">
+          {{item.statusText}}
+        </text>
       </view>
 
       <view wx:if="{{!schedules.length}}" class="empty-state">

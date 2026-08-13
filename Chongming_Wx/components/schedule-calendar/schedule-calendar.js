@@ -7,21 +7,27 @@ const {
   toLocalDateKey,
 } = require('../../utils/date-time')
 
-function createIndicatorCounts(dateIndicators) {
-  const counts = {}
+function createIndicatorMap(dateIndicators) {
+  const indicators = {}
   if (!Array.isArray(dateIndicators)) {
-    return counts
+    return indicators
   }
   dateIndicators.forEach(indicator => {
     if (!indicator || typeof indicator.dateKey !== 'string') {
       return
     }
-    const count = Number.isInteger(indicator.count) && indicator.count > 0
-      ? indicator.count
-      : 1
-    counts[indicator.dateKey] = count
+    const confirmedCount = Number.isInteger(indicator.confirmedCount)
+      ? Math.max(indicator.confirmedCount, 0)
+      : 0
+    const interestedCount = Number.isInteger(indicator.interestedCount)
+      ? Math.max(indicator.interestedCount, 0)
+      : 0
+    indicators[indicator.dateKey] = {
+      confirmedCount,
+      interestedCount,
+    }
   })
-  return counts
+  return indicators
 }
 
 function buildCalendarCells(year, month, selectedDate, dateIndicators) {
@@ -29,13 +35,14 @@ function buildCalendarCells(year, month, selectedDate, dateIndicators) {
   const leadingCellCount = (firstWeekday + 6) % 7
   const dayCount = new Date(year, month, 0).getDate()
   const todayKey = toLocalDateKey(new Date())
-  const indicatorCounts = createIndicatorCounts(dateIndicators)
+  const indicatorMap = createIndicatorMap(dateIndicators)
 
   return Array.from({ length: CALENDAR_CELL_COUNT }, (_, index) => {
     const day = index - leadingCellCount + 1
     const inMonth = day >= 1 && day <= dayCount
     const cellDate = new Date(year, month - 1, day)
     const date = toLocalDateKey(cellDate)
+    const indicator = indicatorMap[date]
     return {
       key: `calendar-cell-${index}`,
       day: cellDate.getDate(),
@@ -43,8 +50,8 @@ function buildCalendarCells(year, month, selectedDate, dateIndicators) {
       inMonth,
       isSelected: date === selectedDate,
       isToday: inMonth && date === todayKey,
-      indicatorCount: indicatorCounts[date] || 0,
-      hasIndicator: Boolean(indicatorCounts[date]),
+      hasConfirmed: Boolean(indicator && indicator.confirmedCount > 0),
+      hasInterested: Boolean(indicator && indicator.interestedCount > 0),
     }
   })
 }

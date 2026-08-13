@@ -54,21 +54,21 @@
       <view class="setting-row">
         <view class="setting-copy">
           <text class="field-label">同行招募</text>
-          <text class="field-hint">私密、已完成或已取消时不可招募</text>
+          <text class="field-hint">感兴趣或已确认的公开安排可以招募</text>
         </view>
         <picker
-          disabled="{{visibility === 'PRIVATE' || planningStatus !== 'CONFIRMED'}}"
+          disabled="{{!canRecruit}}"
           range="{{recruitmentOptions}}"
           range-key="label"
           value="{{recruitmentIndex}}"
           bindchange="onRecruitmentChange"
         >
-          <view class="setting-value {{visibility === 'PRIVATE' || planningStatus !== 'CONFIRMED' ? 'setting-value-disabled' : ''}}">
+          <view class="setting-value {{!canRecruit ? 'setting-value-disabled' : ''}}">
             {{recruitmentOptions[recruitmentIndex].label}} ›
           </view>
         </picker>
       </view>
-      <view wx:if="{{mode === 'edit'}}" class="setting-row">
+      <view class="setting-row">
         <view class="setting-copy">
           <text class="field-label">安排状态</text>
           <text class="field-hint">用于标记安排已经完成或取消</text>

@@ -6,6 +6,7 @@ const {
   ScheduleRecruitmentStatus,
   ScheduleTargetType,
   ScheduleVisibility,
+  canScheduleRecruit,
 } = require('../../models/schedule')
 const {
   normalizeLocalDateKey,
@@ -25,6 +26,7 @@ const RECRUITMENT_OPTIONS = [
 
 const PLANNING_OPTIONS = [
   { label: '已确认', value: SchedulePlanningStatus.CONFIRMED },
+  { label: '感兴趣', value: SchedulePlanningStatus.INTERESTED },
   { label: '已完成', value: SchedulePlanningStatus.COMPLETED },
   { label: '已取消', value: SchedulePlanningStatus.CANCELLED },
 ]
@@ -80,6 +82,7 @@ Page({
     recruitmentOptions: RECRUITMENT_OPTIONS,
     recruitmentIndex: 0,
     recruitmentStatus: ScheduleRecruitmentStatus.NOT_RECRUITING,
+    canRecruit: false,
     planningOptions: PLANNING_OPTIONS,
     planningIndex: 0,
     planningStatus: SchedulePlanningStatus.CONFIRMED,
@@ -166,6 +169,10 @@ Page({
         schedule.recruitmentStatus
       ),
       recruitmentStatus: schedule.recruitmentStatus,
+      canRecruit: canScheduleRecruit(
+        schedule.planningStatus,
+        schedule.visibility
+      ),
       planningIndex: findOptionIndex(PLANNING_OPTIONS, schedule.planningStatus),
       planningStatus: schedule.planningStatus,
       sharedNote: schedule.sharedNote,
@@ -203,8 +210,9 @@ Page({
   onVisibilityChange(e) {
     const visibilityIndex = Number(e.detail.value)
     const visibility = VISIBILITY_OPTIONS[visibilityIndex].value
-    const nextData = { visibilityIndex, visibility }
-    if (visibility === ScheduleVisibility.PRIVATE) {
+    const canRecruit = canScheduleRecruit(this.data.planningStatus, visibility)
+    const nextData = { visibilityIndex, visibility, canRecruit }
+    if (!canRecruit) {
       nextData.recruitmentIndex = 0
       nextData.recruitmentStatus = ScheduleRecruitmentStatus.NOT_RECRUITING
     }
@@ -222,8 +230,9 @@ Page({
   onPlanningChange(e) {
     const planningIndex = Number(e.detail.value)
     const planningStatus = PLANNING_OPTIONS[planningIndex].value
-    const nextData = { planningIndex, planningStatus }
-    if (planningStatus !== SchedulePlanningStatus.CONFIRMED) {
+    const canRecruit = canScheduleRecruit(planningStatus, this.data.visibility)
+    const nextData = { planningIndex, planningStatus, canRecruit }
+    if (!canRecruit) {
       nextData.recruitmentIndex = 0
       nextData.recruitmentStatus = ScheduleRecruitmentStatus.NOT_RECRUITING
     }

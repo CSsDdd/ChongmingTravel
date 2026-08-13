@@ -13,8 +13,23 @@ const {
 
 const PLANNING_STATUS_TEXT = Object.freeze({
   CONFIRMED: '已确认',
+  INTERESTED: '感兴趣',
   COMPLETED: '已完成',
   CANCELLED: '已取消',
+})
+
+const PLANNING_STATUS_PRIORITY = Object.freeze({
+  CONFIRMED: 0,
+  INTERESTED: 1,
+  COMPLETED: 2,
+  CANCELLED: 3,
+})
+
+const PLANNING_STATUS_CLASS = Object.freeze({
+  CONFIRMED: 'confirmed',
+  INTERESTED: 'interested',
+  COMPLETED: 'completed',
+  CANCELLED: 'cancelled',
 })
 
 const RECRUITMENT_STATUS_TEXT = Object.freeze({
@@ -54,6 +69,7 @@ async function toScheduleCard(schedule, currentUserId) {
     )}`,
     targetTitle: target ? target.title : '目标不可用',
     statusText: `${planningText} · ${recruitmentText}`,
+    statusClass: PLANNING_STATUS_CLASS[schedule.planningStatus] || '',
     privateNote: isOwner ? schedule.privateNote : '',
     canViewPrivateNote: isOwner,
     canEdit: isOwner,
@@ -130,6 +146,12 @@ Page({
     const scheduleCards = await Promise.all(
       schedules.map(schedule => toScheduleCard(schedule, currentUserId))
     )
+    scheduleCards.sort((left, right) => (
+      (PLANNING_STATUS_PRIORITY[left.planningStatus] ?? Number.MAX_SAFE_INTEGER)
+      - (PLANNING_STATUS_PRIORITY[right.planningStatus] ?? Number.MAX_SAFE_INTEGER)
+      || left.startAtEpochMillis - right.startAtEpochMillis
+      || left.id.localeCompare(right.id)
+    ))
     this.setData({ schedules: scheduleCards })
   },
 
