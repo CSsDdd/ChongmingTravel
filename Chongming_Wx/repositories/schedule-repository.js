@@ -1,4 +1,6 @@
-const sampleScheduleState = require('../data/sample-schedules')
+const {
+  createInitialScheduleState,
+} = require('../data/seeds/schedule-seed')
 const { createSchedule } = require('../models/schedule')
 const userRepository = require('./user-repository')
 
@@ -22,7 +24,7 @@ function requireText(value, fieldName) {
 function normalizeState(rawState) {
   const source = rawState && Array.isArray(rawState.schedules)
     ? rawState
-    : clone(sampleScheduleState)
+    : createInitialScheduleState()
   return {
     nextScheduleSequence: Number.isInteger(source.nextScheduleSequence)
       && source.nextScheduleSequence > 0

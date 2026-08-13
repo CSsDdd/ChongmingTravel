@@ -1,1 +1,172 @@
-@import "../favorites/favorites.wxss";
+.editor-page {
+  height: 100vh;
+  padding: 0 24rpx 64rpx;
+  box-sizing: border-box;
+  background: #f5f7f4;
+}
+
+.draft-type-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  margin: 0 -24rpx 30rpx;
+  padding: 18rpx 24rpx;
+  border-bottom: 1rpx solid #e4e9e3;
+  background: #ffffff;
+}
+
+.draft-type-item {
+  position: relative;
+  flex: 1;
+  padding: 18rpx 12rpx;
+  color: #7d857e;
+  font-size: 27rpx;
+  font-weight: 600;
+  text-align: center;
+}
+
+.draft-type-item-active {
+  color: #2f6f4e;
+}
+
+.draft-type-item-active::after {
+  position: absolute;
+  right: 25%;
+  bottom: 2rpx;
+  left: 25%;
+  height: 5rpx;
+  border-radius: 999rpx;
+  background: #2f6f4e;
+  content: '';
+}
+
+.page-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28rpx;
+}
+
+.heading-copy,
+.draft-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.page-title {
+  color: #202520;
+  font-size: 38rpx;
+  font-weight: 700;
+}
+
+.page-subtitle {
+  margin-top: 8rpx;
+  color: #7b837c;
+  font-size: 23rpx;
+}
+
+.create-button {
+  width: auto;
+  margin: 0 0 0 24rpx;
+  padding: 0 26rpx;
+  border-radius: 999rpx;
+  color: #ffffff;
+  font-size: 26rpx;
+  line-height: 72rpx;
+  background: #2f6f4e;
+}
+
+.create-button::after {
+  border: none;
+}
+
+.state-message {
+  padding: 140rpx 0;
+  color: #858c85;
+  font-size: 27rpx;
+  text-align: center;
+}
+
+.draft-card {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding: 28rpx 26rpx;
+  border-radius: 22rpx;
+  background: #ffffff;
+}
+
+.draft-title {
+  overflow: hidden;
+  color: #252c27;
+  font-size: 29rpx;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-badge {
+  align-self: center;
+  flex: none;
+  margin-left: 16rpx;
+  padding: 7rpx 13rpx;
+  border-radius: 999rpx;
+  font-size: 20rpx;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-not-submitted {
+  color: #6f756f;
+  background: #eef0ed;
+}
+
+.status-in-review {
+  color: #8a5a17;
+  background: #fff0d8;
+}
+
+.draft-location {
+  margin-top: 10rpx;
+  color: #566059;
+  font-size: 25rpx;
+}
+
+.draft-meta {
+  overflow: hidden;
+  margin-top: 8rpx;
+  color: #929992;
+  font-size: 22rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.draft-arrow {
+  margin-left: 20rpx;
+  color: #6d826f;
+  font-size: 44rpx;
+}
+
+.route-placeholder {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 180rpx 32rpx;
+  border-radius: 24rpx;
+  background: #ffffff;
+}
+
+.route-placeholder-title {
+  color: #303832;
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.route-placeholder-text {
+  margin-top: 14rpx;
+  color: #929992;
+  font-size: 24rpx;
+}

@@ -3,7 +3,14 @@
 <view wx:elif="{{missing}}" class="state-message">没有找到对应的打卡点版本</view>
 
 <scroll-view wx:else class="detail-page" scroll-y>
-  <view class="hero-placeholder">户外探索</view>
+  <image
+    wx:if="{{checkpoint.imageUrl}}"
+    class="hero-image"
+    src="{{checkpoint.imageUrl}}"
+    mode="aspectFill"
+    binderror="onImageError"
+  />
+  <view wx:else class="hero-placeholder">户外探索</view>
 
   <view class="detail-content">
     <text class="title">{{checkpoint.title}}</text>

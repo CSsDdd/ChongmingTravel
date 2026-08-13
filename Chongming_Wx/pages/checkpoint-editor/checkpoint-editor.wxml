@@ -1,0 +1,64 @@
+<scroll-view class="editor-page" scroll-y>
+  <view wx:if="{{isLoading}}" class="loading-state">正在加载草稿…</view>
+
+  <block wx:else>
+    <view class="form-card">
+      <text class="field-label">基本信息</text>
+      <input class="text-field" disabled="{{reviewStatus === 'IN_REVIEW'}}" value="{{title}}" maxlength="60" placeholder="打卡点标题" data-field="title" bindinput="onFieldInput" />
+      <textarea class="text-area" disabled="{{reviewStatus === 'IN_REVIEW'}}" value="{{shortText}}" maxlength="300" placeholder="简单介绍这个打卡点" data-field="shortText" bindinput="onFieldInput" />
+
+      <view class="image-section">
+        <image
+          wx:if="{{imageId && !imagePreviewFailed}}"
+          class="image-preview"
+          src="{{imageId}}"
+          mode="aspectFill"
+          bindtap="chooseCheckpointImage"
+          binderror="onImagePreviewError"
+        />
+        <view wx:else class="image-placeholder" bindtap="chooseCheckpointImage">
+          <text class="image-placeholder-title">{{imageId ? '当前图片暂不可预览' : '尚未选择图片'}}</text>
+          <text class="image-placeholder-hint">可从相册选择或使用相机拍摄</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="form-card" bindtap="chooseCheckpointLocation">
+      <text class="field-label">位置</text>
+      <view wx:if="{{locationName}}" class="location-result">
+        <text class="location-name">{{locationName}}</text>
+        <text class="location-coordinate">{{latitude}}，{{longitude}}</text>
+        <text class="location-system">{{coordinateSystemLabel}}</text>
+      </view>
+      <view wx:else class="location-placeholder">
+        <text class="location-placeholder-title">尚未选择地点</text>
+        <text class="location-placeholder-hint">通过微信地图获取地点和坐标</text>
+      </view>
+    </view>
+
+    <view class="form-card">
+      <text class="field-label">标签</text>
+      <text class="field-hint">使用逗号分隔，例如：湿地，观鸟，亲子</text>
+      <input class="text-field" disabled="{{reviewStatus === 'IN_REVIEW'}}" value="{{tagTextInput}}" placeholder="输入标签" data-field="tagTextInput" bindinput="onFieldInput" />
+    </view>
+
+    <button class="save-button" loading="{{isSaving}}" disabled="{{isSaving || isSubmitting || isDeleting || reviewStatus === 'IN_REVIEW'}}" bindtap="saveCheckpoint">
+      {{mode === 'edit' ? '保存修改' : '创建草稿'}}
+    </button>
+    <button
+      class="review-button"
+      loading="{{isSubmitting}}"
+      disabled="{{isSaving || isSubmitting || isDeleting}}"
+      bindtap="submitForReview"
+    >
+      {{reviewStatus === 'IN_REVIEW' ? '撤回审核请求' : '提交审核'}}
+    </button>
+    <button
+      wx:if="{{checkpointId}}"
+      class="delete-button"
+      loading="{{isDeleting}}"
+      disabled="{{isSaving || isSubmitting || isDeleting || reviewStatus === 'IN_REVIEW'}}"
+      bindtap="deleteCheckpointDraft"
+    >删除草稿</button>
+  </block>
+</scroll-view>

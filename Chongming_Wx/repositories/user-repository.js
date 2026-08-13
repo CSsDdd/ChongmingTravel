@@ -1,4 +1,6 @@
-const sampleUserState = require('../data/sample-users')
+const {
+  createInitialUserState,
+} = require('../data/seeds/user-seed')
 const { createUser } = require('../models/user')
 
 const STORAGE_KEY = 'sample-user-repository-v1'
@@ -18,7 +20,7 @@ function loadState() {
     && Array.isArray(storedState.identities)) {
     return storedState
   }
-  return clone(sampleUserState)
+  return createInitialUserState()
 }
 
 function saveState(state) {

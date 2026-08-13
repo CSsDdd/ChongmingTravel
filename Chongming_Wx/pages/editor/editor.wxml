@@ -1,4 +1,50 @@
-<view class="placeholder">
-  <text class="placeholder-title">编辑</text>
-  <text class="placeholder-text">创建和管理打卡点的入口将在这里实现。</text>
-</view>
+<scroll-view class="editor-page" scroll-y>
+  <view class="draft-type-bar">
+    <view
+      class="draft-type-item {{activeDraftType === 'checkpoint' ? 'draft-type-item-active' : ''}}"
+      data-type="checkpoint"
+      bindtap="selectDraftType"
+    >打卡点草稿</view>
+    <view
+      class="draft-type-item {{activeDraftType === 'route' ? 'draft-type-item-active' : ''}}"
+      data-type="route"
+      bindtap="selectDraftType"
+    >路线草稿</view>
+  </view>
+
+  <block wx:if="{{activeDraftType === 'checkpoint'}}">
+    <view class="page-heading">
+      <view class="heading-copy">
+        <text class="page-title">打卡点草稿</text>
+        <text class="page-subtitle">创建或继续编辑等待审核的内容</text>
+      </view>
+      <button class="create-button" bindtap="createCheckpoint">＋ 新建</button>
+    </view>
+
+    <view wx:if="{{isLoading}}" class="state-message">正在加载草稿…</view>
+    <view wx:elif="{{!drafts.length}}" class="state-message">暂时没有打卡点草稿</view>
+
+    <view wx:else class="draft-list">
+      <view
+        wx:for="{{drafts}}"
+        wx:key="checkpointId"
+        class="draft-card"
+        data-id="{{item.checkpointId}}"
+        bindtap="editCheckpoint"
+      >
+        <view class="draft-copy">
+          <text class="draft-title">{{item.title || '未命名打卡点'}}</text>
+          <text class="draft-location">{{item.location.locationName || '尚未填写地点'}}</text>
+          <text class="draft-meta">{{item.tagText || '暂无标签'}}</text>
+        </view>
+        <text class="status-badge {{item.reviewStatusClass}}">{{item.reviewStatusLabel}}</text>
+        <text class="draft-arrow">›</text>
+      </view>
+    </view>
+  </block>
+
+  <view wx:else class="route-placeholder">
+    <text class="route-placeholder-title">路线草稿</text>
+    <text class="route-placeholder-text">路线编辑功能将在这里接入</text>
+  </view>
+</scroll-view>

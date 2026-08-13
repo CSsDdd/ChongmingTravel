@@ -1,4 +1,5 @@
 const checkpointRepository = require('../../repositories/checkpoint-repository')
+const { withImageUrl } = require('../../utils/local-media')
 
 Page({
   data: {
@@ -16,10 +17,14 @@ Page({
     )
 
     this.setData({
-      checkpoint,
+      checkpoint: checkpoint ? withImageUrl(checkpoint) : null,
       loading: false,
       missing: checkpoint === null,
     })
+  },
+
+  onImageError() {
+    this.setData({ 'checkpoint.imageUrl': '' })
   },
 
   addToRoute() {
