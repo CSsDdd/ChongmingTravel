@@ -104,6 +104,11 @@
   text-align: center;
 }
 
+.interested-day {
+  color: #356b88;
+  background: #e2f1f8;
+}
+
 .outside-month {
   color: #c5cac5;
 }
