@@ -1,18 +1,18 @@
 {
   "pages": [
     "pages/discovery/discovery",
-    "pages/login/login",
+    "pages/user/login/login",
     "pages/favorites/favorites",
-    "pages/profile/profile",
+    "pages/user/profile/profile",
     "pages/schedule/schedule",
-    "pages/schedule-editor/schedule-editor",
-    "pages/profile-editor/profile-editor",
-    "pages/user-editor/user-editor",
+    "pages/schedule/editor/schedule-editor",
+    "pages/user/profile-editor/profile-editor",
+    "pages/user/user-editor/user-editor",
     "pages/editor/editor",
-    "pages/checkpoint-editor/checkpoint-editor",
-    "pages/checkpoint-detail/checkpoint-detail",
-    "pages/discovery-search/discovery-search",
-    "pages/checkpoint-picker/checkpoint-picker"
+    "pages/checkpoint/editor/checkpoint-editor",
+    "pages/checkpoint/detail/checkpoint-detail",
+    "pages/discovery/search/discovery-search",
+    "pages/checkpoint/picker/checkpoint-picker"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -47,7 +47,7 @@
         "text": "编辑"
       },
       {
-        "pagePath": "pages/profile/profile",
+        "pagePath": "pages/user/profile/profile",
         "text": "我的"
       }
     ]

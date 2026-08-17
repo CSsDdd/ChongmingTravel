@@ -1,5 +1,5 @@
-const checkpointRepository = require('../../repositories/checkpoint-repository')
-const { withImageUrl } = require('../../utils/local-media')
+const checkpointRepository = require('../../../repositories/checkpoint-repository')
+const { withImageUrl } = require('../../../utils/local-media')
 
 Page({
   data: {

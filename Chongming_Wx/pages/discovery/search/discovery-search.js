@@ -1,5 +1,5 @@
-const checkpointRepository = require('../../repositories/checkpoint-repository')
-const { withImageUrl } = require('../../utils/local-media')
+const checkpointRepository = require('../../../repositories/checkpoint-repository')
+const { withImageUrl } = require('../../../utils/local-media')
 
 Page({
   data: {
@@ -38,15 +38,10 @@ Page({
     this.setData({ [`checkpoints[${index}].imageUrl`]: '' })
   },
 
-  selectCheckpoint(e) {
-    const { id, version, title } = e.currentTarget.dataset
-    const eventChannel = this.getOpenerEventChannel()
-
-    eventChannel.emit('checkpointSelected', {
-      id,
-      version,
-      title,
+  openCheckpoint(e) {
+    const { id, version } = e.currentTarget.dataset
+    wx.navigateTo({
+      url: `/pages/checkpoint/detail/checkpoint-detail?checkpointId=${id}&version=${version}`,
     })
-    wx.navigateBack()
   },
 })

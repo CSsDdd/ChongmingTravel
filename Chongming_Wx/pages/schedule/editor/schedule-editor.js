@@ -1,17 +1,17 @@
-const checkpointRepository = require('../../repositories/checkpoint-repository')
-const scheduleRepository = require('../../repositories/schedule-repository')
-const userRepository = require('../../repositories/user-repository')
+const checkpointRepository = require('../../../repositories/checkpoint-repository')
+const scheduleRepository = require('../../../repositories/schedule-repository')
+const userRepository = require('../../../repositories/user-repository')
 const {
   SchedulePlanningStatus,
   ScheduleRecruitmentStatus,
   ScheduleTargetType,
   ScheduleVisibility,
   canScheduleRecruit,
-} = require('../../models/schedule')
+} = require('../../../models/schedule')
 const {
   normalizeLocalDateKey,
   toLocalDateKey,
-} = require('../../utils/date-time')
+} = require('../../../utils/date-time')
 
 const VISIBILITY_OPTIONS = [
   { label: '仅自己可见', value: ScheduleVisibility.PRIVATE },
@@ -184,7 +184,7 @@ Page({
   openCheckpointPicker() {
 
     wx.navigateTo({
-      url: '/pages/checkpoint-picker/checkpoint-picker',
+      url: '/pages/checkpoint/picker/checkpoint-picker',
       events: {
         checkpointSelected: checkpoint => {
           this.setData({

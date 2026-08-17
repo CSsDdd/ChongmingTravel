@@ -1,7 +1,7 @@
-const { createUserProfile } = require('../../models/user-profile')
-const profileOptionRepository = require('../../repositories/profile-option-repository')
-const userRepository = require('../../repositories/user-repository')
-const userProfileRepository = require('../../repositories/user-profile-repository')
+const { createUserProfile } = require('../../../models/user-profile')
+const profileOptionRepository = require('../../../repositories/profile-option-repository')
+const userRepository = require('../../../repositories/user-repository')
+const userProfileRepository = require('../../../repositories/user-profile-repository')
 
 const MAX_TAGS = 6
 const MAX_TAG_LENGTH = 12

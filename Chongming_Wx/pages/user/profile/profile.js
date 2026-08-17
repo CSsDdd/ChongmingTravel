@@ -1,13 +1,13 @@
-const userRepository = require('../../repositories/user-repository')
-const userProfileRepository = require('../../repositories/user-profile-repository')
-const { findByOwnerAndRange } = require('../../repositories/schedule-repository')
+const userRepository = require('../../../repositories/user-repository')
+const userProfileRepository = require('../../../repositories/user-profile-repository')
+const { findByOwnerAndRange } = require('../../../repositories/schedule-repository')
 const {
   createLocalCalendarGridRange,
   toLocalDateKey,
-} = require('../../utils/date-time')
+} = require('../../../utils/date-time')
 const {
   createScheduleDateIndicators,
-} = require('../../utils/schedule-date-indicators')
+} = require('../../../utils/schedule-date-indicators')
 
 const AGE_GROUP_LABELS = {
   UNDER_12: '12岁以下',
@@ -64,11 +64,11 @@ Page({
   },
 
   onClickProfile() {
-    wx.navigateTo({ url: '/pages/profile-editor/profile-editor' })
+    wx.navigateTo({ url: '/pages/user/profile-editor/profile-editor' })
   },
 
   onClickUserBasic() {
-    wx.navigateTo({ url: '/pages/user-editor/user-editor' })
+    wx.navigateTo({ url: '/pages/user/user-editor/user-editor' })
   },
 
   onClickSchedule() {
@@ -76,6 +76,6 @@ Page({
   },
 
   goToLogin() {
-    wx.navigateTo({ url: '/pages/login/login' })
+    wx.navigateTo({ url: '/pages/user/login/login' })
   },
 })

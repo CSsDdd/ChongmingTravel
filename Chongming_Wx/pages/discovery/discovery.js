@@ -22,14 +22,14 @@ Page({
 
   openCheckpointSearch() {
     wx.navigateTo({
-      url: '/pages/discovery-search/discovery-search',
+      url: '/pages/discovery/search/discovery-search',
     })
   },
 
   openCheckpoint(e) {
     const { id, version } = e.currentTarget.dataset
     wx.navigateTo({
-      url: `/pages/checkpoint-detail/checkpoint-detail?checkpointId=${id}&version=${version}`,
+      url: `/pages/checkpoint/detail/checkpoint-detail?checkpointId=${id}&version=${version}`,
     })
   },
 })

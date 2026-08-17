@@ -1,5 +1,5 @@
 const defaultAvatarUrl = 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'
-const userRepository = require('../../repositories/user-repository')
+const userRepository = require('../../../repositories/user-repository')
 
 Page({
   data: {
@@ -61,7 +61,7 @@ Page({
         avatarImageId: avatarUrl,
       })
       getApp().globalData.currentUser = user
-      wx.switchTab({ url: '/pages/profile/profile' })
+      wx.switchTab({ url: '/pages/user/profile/profile' })
     } catch (error) {
       wx.showToast({ title: error.message || '登录失败', icon: 'none' })
     }

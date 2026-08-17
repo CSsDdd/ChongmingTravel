@@ -1,4 +1,4 @@
-@import "../favorites/favorites.wxss";
+@import "../../favorites/favorites.wxss";
 
 .profile-page {
   min-height: 100vh;

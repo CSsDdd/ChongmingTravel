@@ -1,9 +1,9 @@
-const checkpointRepository = require('../../repositories/checkpoint-repository')
+const checkpointRepository = require('../../../repositories/checkpoint-repository')
 const {
   CheckpointDraftReviewStatus,
   CoordinateSystem,
-} = require('../../models/checkpoint')
-const { saveLocalFile } = require('../../utils/local-media')
+} = require('../../../models/checkpoint')
+const { saveLocalFile } = require('../../../utils/local-media')
 
 function createFormDraft(data) {
   return {

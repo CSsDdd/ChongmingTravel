@@ -1,4 +1,4 @@
-const userRepository = require('../../repositories/user-repository')
+const userRepository = require('../../../repositories/user-repository')
 
 function createBasicInfoDraft(data) {
   return {
@@ -72,7 +72,7 @@ Page({
   },
 
   goToLogin() {
-    wx.navigateTo({ url: '/pages/login/login' })
+    wx.navigateTo({ url: '/pages/user/login/login' })
   },
 
   async saveBasicInfo() {

@@ -174,7 +174,7 @@ Page({
   },
 
   goToLogin() {
-    wx.navigateTo({ url: '/pages/login/login' })
+    wx.navigateTo({ url: '/pages/user/login/login' })
   },
 
   goToScheduleEditor(e) {
@@ -200,7 +200,7 @@ Page({
       : `date=${encodeURIComponent(this.data.selectedDate)}`
   
     wx.navigateTo({
-      url: `/pages/schedule-editor/schedule-editor?${query}`,
+      url: `/pages/schedule/editor/schedule-editor?${query}`,
     })
   }
 })

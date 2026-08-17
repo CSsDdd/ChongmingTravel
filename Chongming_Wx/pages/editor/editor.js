@@ -45,13 +45,13 @@ Page({
   },
 
   createCheckpoint() {
-    wx.navigateTo({ url: '/pages/checkpoint-editor/checkpoint-editor' })
+    wx.navigateTo({ url: '/pages/checkpoint/editor/checkpoint-editor' })
   },
 
   editCheckpoint(e) {
     const checkpointId = e.currentTarget.dataset.id
     wx.navigateTo({
-      url: `/pages/checkpoint-editor/checkpoint-editor?checkpointId=${encodeURIComponent(checkpointId)}`,
+      url: `/pages/checkpoint/editor/checkpoint-editor?checkpointId=${encodeURIComponent(checkpointId)}`,
     })
   },
 })
