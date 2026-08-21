@@ -43,8 +43,37 @@
     </view>
   </block>
 
-  <view wx:else class="route-placeholder">
-    <text class="route-placeholder-title">路线草稿</text>
-    <text class="route-placeholder-text">路线编辑功能将在这里接入</text>
-  </view>
+  <block wx:else>
+    <view class="page-heading route-page-heading">
+      <view class="heading-copy">
+        <text class="page-title">路线草稿</text>
+        <text class="page-subtitle">管理准备发布或用于安排的个人路线</text>
+      </view>
+      <view class="route-actions">
+        <button class="copy-button" bindtap="copyPublishedRoute">复制已有</button>
+        <button class="create-button" bindtap="createRoute">＋ 新建</button>
+      </view>
+    </view>
+
+    <view wx:if="{{isLoading}}" class="state-message">正在加载草稿…</view>
+    <view wx:elif="{{!drafts.length}}" class="state-message">暂时没有路线草稿</view>
+
+    <view wx:else class="draft-list">
+      <view
+        wx:for="{{drafts}}"
+        wx:key="routeId"
+        class="draft-card"
+        data-id="{{item.routeId}}"
+        bindtap="editRoute"
+      >
+        <view class="draft-copy">
+          <text class="draft-title">{{item.title || '未命名路线'}}</text>
+          <text class="draft-location">{{item.checkpointCount}} 个打卡点</text>
+          <text class="draft-meta">{{item.tagText || '暂无标签'}}</text>
+        </view>
+        <text class="status-badge {{item.reviewStatusClass}}">{{item.reviewStatusLabel}}</text>
+        <text class="draft-arrow">›</text>
+      </view>
+    </view>
+  </block>
 </scroll-view>
