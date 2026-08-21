@@ -12,7 +12,9 @@
     "pages/checkpoint/editor/checkpoint-editor",
     "pages/checkpoint/detail/checkpoint-detail",
     "pages/discovery/search/discovery-search",
-    "pages/checkpoint/picker/checkpoint-picker"
+    "pages/checkpoint/picker/checkpoint-picker",
+    "pages/route/editor/editor",
+    "pages/route/detail/detail"
   ],
   "window": {
     "navigationBarTextStyle": "black",

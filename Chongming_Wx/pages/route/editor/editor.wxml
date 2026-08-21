@@ -1,0 +1,220 @@
+<view class="route-editor-page">
+  <view
+    class="route-toolbar"
+    style="height: {{navigationBarHeight}}px; padding-top: {{statusBarHeight}}px; padding-right: {{toolbarRightInset}}px;"
+  >
+    <view class="toolbar-action toolbar-back" bindtap="goBack">‹</view>
+    <text class="toolbar-title">{{title || '未命名路线'}}</text>
+    <view class="toolbar-spacer" />
+  </view>
+
+  <scroll-view class="route-scroll" scroll-y enhanced show-scrollbar="{{false}}">
+    <view class="route-content" style="padding-top: {{contentTop}}px;">
+      <view wx:if="{{isLoading}}" class="state-message">正在加载路线…</view>
+
+      <block wx:else>
+        <view wx:if="{{isReadOnly}}" class="review-notice">
+          该草稿正在审核中，撤回审核后才能继续编辑
+        </view>
+
+        <view class="cover-card" bindtap="chooseCover">
+          <image
+            wx:if="{{coverImageUrl}}"
+            class="cover-image"
+            src="{{coverImageUrl}}"
+            mode="aspectFill"
+          />
+          <view wx:else class="cover-placeholder">
+            <text class="cover-icon">＋</text>
+            <text>添加路线封面</text>
+          </view>
+          <text wx:if="{{coverImageUrl && !isReadOnly}}" class="cover-edit">更换封面</text>
+        </view>
+
+        <view class="route-info-card">
+          <input
+            class="route-title-input"
+            value="{{title}}"
+            placeholder="给路线起一个名字"
+            maxlength="40"
+            disabled="{{isReadOnly}}"
+            data-field="title"
+            bindinput="onFieldInput"
+          />
+          <textarea
+            class="route-description-input"
+            value="{{description}}"
+            placeholder="介绍这条路线适合谁、有什么体验"
+            maxlength="300"
+            auto-height
+            disabled="{{isReadOnly}}"
+            data-field="description"
+            bindinput="onFieldInput"
+          />
+          <input
+            class="route-tags-input"
+            value="{{tagTextInput}}"
+            placeholder="#亲子，#观鸟，#半日游"
+            maxlength="80"
+            disabled="{{isReadOnly}}"
+            data-field="tagTextInput"
+            bindinput="onFieldInput"
+          />
+          <textarea
+            class="route-note-input"
+            value="{{note}}"
+            placeholder="补充路线整体说明（可选）"
+            maxlength="500"
+            auto-height
+            disabled="{{isReadOnly}}"
+            data-field="note"
+            bindinput="onFieldInput"
+          />
+        </view>
+
+        <view class="section-heading">
+          <text class="section-title">起点</text>
+          <text class="section-count">{{stops.length}} 个打卡点</text>
+        </view>
+
+        <view wx:if="{{!stops.length}}" class="empty-route">
+          <text class="empty-route-title">从第一个地点开始</text>
+          <text class="empty-route-copy">之后可以继续在任意两站之间插入地点</text>
+          <view
+            class="primary-add-button"
+            data-index="0"
+            bindtap="openCheckpointPicker"
+          >＋ 添加第一个地点</view>
+        </view>
+
+        <view wx:else class="stops-list">
+          <view class="route-connector">
+            <view
+              class="insert-stop-button"
+              data-index="0"
+              bindtap="openCheckpointPicker"
+            >添加地点</view>
+          </view>
+          <block wx:for="{{stops}}" wx:key="viewKey">
+            <view
+              class="stop-card {{dragState.active && dragState.editorStopId === item.editorStopId ? 'stop-card-placeholder' : ''}}"
+            >
+              <view class="stop-heading-row">
+                <text class="stop-order">{{item.orderLabel}}</text>
+                <view class="stop-heading-copy">
+                  <text class="stop-title">{{item.title}}</text>
+                </view>
+                <view wx:if="{{!isReadOnly}}" class="stop-actions">
+                  <view
+                    class="stop-remove-button"
+                    data-stop-id="{{item.editorStopId}}"
+                    bindtap="confirmRemoveStop"
+                  >×</view>
+                  <view
+                    wx:if="{{stops.length > 1}}"
+                    class="stop-drag-handle"
+                    data-stop-id="{{item.editorStopId}}"
+                    catchtouchstart="startStopDrag"
+                    catchtouchmove="moveStopDrag"
+                    catchtouchend="endStopDrag"
+                    catchtouchcancel="cancelStopDrag"
+                  >≡</view>
+                </view>
+              </view>
+
+              <view class="stop-content-row">
+                <image
+                  wx:if="{{item.imageUrl}}"
+                  class="stop-overview-image"
+                  src="{{item.imageUrl}}"
+                  mode="aspectFill"
+                  data-index="{{index}}"
+                  binderror="onStopImageError"
+                />
+                <view wx:else class="stop-overview-placeholder">暂无图片</view>
+                <textarea
+                    class="stop-note-input"
+                    value="{{item.note}}"
+                    placeholder="添加这个地点在本路线中的说明"
+                    maxlength="300"
+                    auto-height
+                    disabled="{{isReadOnly}}"
+                    data-index="{{index}}"
+                    bindinput="onStopNoteInput"
+                  />
+              </view>
+            </view>
+
+            <view wx:if="{{index < stops.length - 1}}" class="route-connector">
+              <picker
+                mode="selector"
+                range="{{trafficOptions}}"
+                range-key="label"
+                value="{{item.trafficOptionIndex}}"
+                disabled="{{isReadOnly}}"
+                data-index="{{index}}"
+                bindchange="onTrafficChange"
+              >
+                <view class="traffic-chip">{{item.trafficToNextLabel}}</view>
+              </picker>
+              <view
+                class="insert-stop-button"
+                data-index="{{index + 1}}"
+                bindtap="openCheckpointPicker"
+              >添加地点</view>
+            </view>
+          </block>
+          
+          <view class="route-connector">
+            <view
+              class="insert-stop-button"
+              data-index="{{stops.length}}"
+              bindtap="openCheckpointPicker"
+            >添加地点</view>
+          </view>
+            <view class="section-heading">
+            <text class="section-title">终点</text>
+            <text class="section-count">{{stops.length}} 个打卡点</text>
+          </view>
+        </view>
+
+        <view class="route-actions-panel">
+          <button
+            class="save-button"
+            loading="{{isSaving}}"
+            disabled="{{isSaving || isSubmitting || isReadOnly}}"
+            bindtap="saveRoute"
+          >{{routeId ? '保存修改' : '创建草稿'}}</button>
+          <button
+            class="review-button"
+            loading="{{isSubmitting}}"
+            disabled="{{isSaving || isSubmitting}}"
+            bindtap="toggleReview"
+          >{{reviewStatus === 'IN_REVIEW' ? '撤回审核请求' : '提交审核'}}</button>
+        </view>
+      </block>
+    </view>
+  </scroll-view>
+
+  <view
+    wx:if="{{dragState.active}}"
+    class="drag-drop-indicator"
+    style="top: {{dragState.indicatorTop}}px; left: {{dragState.previewLeft}}px; width: {{dragState.previewWidth}}px;"
+  />
+
+  <view
+    wx:if="{{dragState.active}}"
+    class="drag-preview"
+    style="left: {{dragState.previewLeft}}px; width: {{dragState.previewWidth}}px; height: {{dragState.previewHeight}}px; transform: translate3d(0, {{dragState.previewTop}}px, 0);"
+  >
+    <text class="stop-order">{{dragState.previewStop.orderLabel}}</text>
+    <view class="stop-main">
+      <text class="stop-title">{{dragState.previewStop.title}}</text>
+      <text class="stop-reference">Checkpoint · {{dragState.previewStop.checkpointVersion}}</text>
+      <text class="drag-note-preview">
+        {{dragState.previewStop.note || '暂无路线说明'}}
+      </text>
+    </view>
+    <view class="stop-drag-handle stop-drag-handle-active">≡</view>
+  </view>
+</view>

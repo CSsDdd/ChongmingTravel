@@ -18,9 +18,7 @@
         class="checkpoint-card"
         wx:for="{{checkpoints}}"
         wx:key="checkpointId"
-        data-id="{{item.checkpointId}}"
-        data-version="{{item.version}}"
-        data-title="{{item.title}}"
+        data-index="{{index}}"
         bindtap="selectCheckpoint"
       >
         <image

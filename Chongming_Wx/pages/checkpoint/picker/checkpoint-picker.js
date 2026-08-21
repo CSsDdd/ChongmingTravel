@@ -39,13 +39,17 @@ Page({
   },
 
   selectCheckpoint(e) {
-    const { id, version, title } = e.currentTarget.dataset
+    const index = Number(e.currentTarget.dataset.index)
+    const checkpoint = this.data.checkpoints[index]
+    if (!checkpoint) {
+      wx.showToast({ title: '没有找到该打卡点', icon: 'none' })
+      return
+    }
     const eventChannel = this.getOpenerEventChannel()
 
     eventChannel.emit('checkpointSelected', {
-      id,
-      version,
-      title,
+      id: checkpoint.checkpointId,
+      version: checkpoint.version,
     })
     wx.navigateBack()
   },

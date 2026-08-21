@@ -69,7 +69,7 @@
 }
 
 .create-button {
-  width: auto;
+  width: 54px;
   margin: 0 0 0 24rpx;
   padding: 0 26rpx;
   border-radius: 999rpx;
@@ -81,6 +81,47 @@
 
 .create-button::after {
   border: none;
+}
+
+.route-actions {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 12rpx;
+}
+
+.route-page-heading {
+  align-items: stretch;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.route-page-heading .heading-copy {
+  flex: none;
+}
+
+.route-actions .create-button,
+.route-actions .copy-button {
+  min-width: 0;
+  flex: 1;
+  margin-left: 0;
+  padding: 0 16rpx;
+  line-height: 68rpx;
+}
+
+.copy-button {
+  width: 54px;
+  margin: 0;
+  padding: 0 22rpx;
+  border-radius: 999rpx;
+  color: #2f6f4e;
+  font-size: 24rpx;
+  line-height: 68rpx;
+  background: #d3f4dd;
+}
+
+.copy-button::after {
+  border-color: #bfd2c4;
 }
 
 .state-message {
@@ -148,25 +189,4 @@
   margin-left: 20rpx;
   color: #6d826f;
   font-size: 44rpx;
-}
-
-.route-placeholder {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  padding: 180rpx 32rpx;
-  border-radius: 24rpx;
-  background: #ffffff;
-}
-
-.route-placeholder-title {
-  color: #303832;
-  font-size: 30rpx;
-  font-weight: 700;
-}
-
-.route-placeholder-text {
-  margin-top: 14rpx;
-  color: #929992;
-  font-size: 24rpx;
 }
