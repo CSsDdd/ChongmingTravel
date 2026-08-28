@@ -17,32 +17,58 @@
       </swiper-item>
     </swiper>
 
-    <view class="section-heading">推荐打卡点</view>
+    <view class="section-heading">随机推荐</view>
 
-    <view class="checkpoint-grid">
-      <view
-        class="checkpoint-card"
-        wx:for="{{checkpoints}}"
-        wx:key="checkpointId"
-        data-id="{{item.checkpointId}}"
-        data-version="{{item.version}}"
-        bindtap="openCheckpoint"
-      >
-        <image
-          wx:if="{{item.imageUrl}}"
-          class="checkpoint-image"
-          src="{{item.imageUrl}}"
-          mode="aspectFill"
-          data-index="{{index}}"
-          binderror="onCheckpointImageError"
-        />
-        <view wx:else class="image-placeholder">户外探索</view>
-        <view class="card-content">
-          <text class="checkpoint-title">{{item.title}}</text>
-          <text class="checkpoint-location">{{item.location.locationName}}</text>
-          <text class="checkpoint-tags">{{item.tagText}}</text>
+    <view class="feed-list">
+      <block wx:for="{{feedItems}}" wx:key="key">
+        <view
+          wx:if="{{item.type === 'CHECKPOINT'}}"
+          class="card"
+          data-id="{{item.data.checkpointId}}"
+          data-version="{{item.data.version}}"
+          bindtap="openCheckpoint"
+        >
+          <image
+            wx:if="{{item.data.imageUrl}}"
+            class="card-image"
+            src="{{item.data.imageUrl}}"
+            mode="aspectFill"
+            data-index="{{index}}"
+            binderror="onFeedImageError"
+          />
+          <view wx:else class="card-placeholder">户外探索</view>
+          <view class="card-content">
+            <text class="card-title">{{item.data.title}}</text>
+            <text class="card-location">{{item.data.location.locationName}}</text>
+            <text class="card-tags">{{item.data.tagText}}</text>
+          </view>
         </view>
-      </view>
+
+        <view
+          wx:else
+          class="card"
+          data-id="{{item.data.routeId}}"
+          data-version="{{item.data.version}}"
+          bindtap="openRoute"
+        >
+          <image
+            wx:if="{{item.data.imageUrl}}"
+            class="card-image"
+            src="{{item.data.imageUrl}}"
+            mode="aspectFill"
+            data-index="{{index}}"
+            binderror="onFeedImageError"
+          />
+          <view wx:else class="card-placeholder">路线探索</view>
+          <view class="card-content">
+            <text class="card-title">{{item.data.title}}</text>
+            <text class="card-description">{{item.data.description}}</text>
+            <view class="route-meta">
+              <text>{{item.data.tagText}}</text>
+            </view>
+          </view>
+        </view>
+      </block>
     </view>
   </scroll-view>
 </view>
