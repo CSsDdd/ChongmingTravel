@@ -15,6 +15,28 @@ function normalizeOwnerUserId(value) {
   return ownerUserId || SYSTEM_CHECKPOINT_OWNER_USER_ID
 }
 
+function normalizeCount(value) {
+  const count = Number(value)
+  return Number.isInteger(count) && count >= 0 ? count : 0
+}
+
+function normalizeStringList(value) {
+  const items = Array.isArray(value) ? value : []
+  return [...new Set(items
+    .map(item => typeof item === 'string' ? item.trim() : '')
+    .filter(Boolean))]
+}
+
+function createEngagementFields(input) {
+  const likedUserIds = normalizeStringList(input.likedUserIds)
+  return {
+    likeCount: likedUserIds.length,
+    likedUserIds,
+    shareCount: normalizeCount(input.shareCount),
+    favoriteCount: normalizeCount(input.favoriteCount),
+  }
+}
+
 /**
  * 创建打卡点主体。
  *
@@ -28,6 +50,7 @@ function createCheckpoint(input) {
     ownerUserId: normalizeOwnerUserId(input.ownerUserId),
     latestVersion: input.latestVersion ?? 0,
     currentPublishedVersion: input.currentPublishedVersion ?? null,
+    ...createEngagementFields(input),
   }
 }
 

@@ -8,6 +8,9 @@ const {
   createCheckpointDraft,
   createCheckpointVersion,
 } = require('../models/checkpoint')
+const {
+  createPublishedCheckpointDto,
+} = require('../dtos/published-checkpoint-dto')
 const userRepository = require('./user-repository')
 // 导入初始化
 const STORAGE_KEY = 'sample-checkpoints-repository-v1'
@@ -495,6 +498,30 @@ async function findVersion(checkpointId, version) {
   return checkpoint ? clone(checkpoint) : null
 }
 
+async function getPublishedCheckpointDTOs() {
+  const state = loadState()
+  const results = state.checkpoints.map(checkpoint => {
+    const version = state.versions.find(item => (
+      item.checkpointId === checkpoint.id
+      && item.version === checkpoint.currentPublishedVersion
+    ))
+    return version ? createPublishedCheckpointDto(checkpoint, version) : null
+  }).filter(Boolean)
+  return clone(results)
+}
+
+async function getPublishedCheckpointDTO(checkpointId, version) {
+  const state = loadState()
+  const checkpoint = state.checkpoints.find(item => item.id === checkpointId)
+  const checkpointVersion = state.versions.find(item => (
+    item.checkpointId === checkpointId && item.version === version
+  ))
+  if (!checkpoint || !checkpointVersion) {
+    return null
+  }
+  return clone(createPublishedCheckpointDto(checkpoint, checkpointVersion))
+}
+
 /**
  * @param {{ text?: string }} query //简单声明query，字段可添加
  */
@@ -502,6 +529,10 @@ async function findVersion(checkpointId, version) {
 // 在公开范围内查找
 async function searchPublished(query = {}) {
   let results = await findPublished()//先获取全部备选（公开范围）
+  return filterPublishedByText(results, query)
+}
+
+function filterPublishedByText(results, query) {
   const text = String(query.text ?? '')//文本规范化
     .normalize('NFKC')
     .trim()
@@ -528,6 +559,11 @@ async function searchPublished(query = {}) {
   return results
 }
 
+async function searchPublishedCheckpointDTOs(query = {}) {
+  const results = await getPublishedCheckpointDTOs()
+  return filterPublishedByText(results, query)
+}
+
 module.exports = {
   approveDraft,
   deleteDraft,
@@ -535,7 +571,10 @@ module.exports = {
   findDrafts,
   findPublished,
   findVersion,
+  getPublishedCheckpointDTO,
+  getPublishedCheckpointDTOs,
   searchPublished,
+  searchPublishedCheckpointDTOs,
   submitDraftForReview,
   update,
   withdrawDraftReview,

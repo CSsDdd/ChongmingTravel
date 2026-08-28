@@ -57,7 +57,6 @@ function normalizeStringList(value) {
   return [...new Set(items.map(normalizeText).filter(Boolean))]
 }
 
-// TODO: Checkpoint 顶层主体后续补充同一组公开互动字段。
 function createEngagementFields(input) {
   const likedUserIds = normalizeStringList(input.likedUserIds)
   return {
