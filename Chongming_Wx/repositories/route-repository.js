@@ -597,6 +597,36 @@ async function getPublishedRouteDTO(routeId, version) {
   return clone(createPublishedRouteDto(route, routeVersion))
 }
 
+async function incrementViewCount(routeId) {
+  const state = loadState()
+  const routeIndex = state.routes.findIndex(route => route.id === routeId)
+  if (routeIndex < 0) {
+    throw new Error('要记录浏览量的公开路线不存在')
+  }
+  const route = createRoute({
+    ...state.routes[routeIndex],
+    viewCount: state.routes[routeIndex].viewCount + 1,
+  })
+  state.routes[routeIndex] = route
+  saveState(state)
+  return route.viewCount
+}
+
+async function incrementShareCount(routeId) {
+  const state = loadState()
+  const routeIndex = state.routes.findIndex(route => route.id === routeId)
+  if (routeIndex < 0) {
+    throw new Error('要记录转发量的公开路线不存在')
+  }
+  const route = createRoute({
+    ...state.routes[routeIndex],
+    shareCount: state.routes[routeIndex].shareCount + 1,
+  })
+  state.routes[routeIndex] = route
+  saveState(state)
+  return route.shareCount
+}
+
 function filterPublishedByText(results, query) {
   const text = String(query.text ?? '')
     .normalize('NFKC')
@@ -640,6 +670,8 @@ module.exports = {
   findVersion,
   getPublishedRouteDTO,
   getPublishedRouteDTOs,
+  incrementShareCount,
+  incrementViewCount,
   searchPublished,
   searchPublishedRouteDTOs,
   submitDraftForReview,

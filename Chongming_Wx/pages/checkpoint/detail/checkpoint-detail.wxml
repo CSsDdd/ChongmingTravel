@@ -21,9 +21,75 @@
     <text class="section-title">打卡点介绍</text>
     <text class="description">{{checkpoint.shortText}}</text>
 
+    <view class="divider interaction-divider"></view>
+    <view class="interaction-panel">
+      <button
+        class="interaction-button"
+        hover-class="none"
+        data-action="LIKE"
+        bindtap="toggleInteraction"
+      >
+        <image
+          class="interaction-icon"
+          src="{{isLiked ? '/assets/icons/like-filled.svg' : '/assets/icons/like-outline.svg'}}"
+          mode="aspectFit"
+        />
+        <text class="interaction-label">喜欢</text>
+        <text class="interaction-count">{{checkpoint.likeCount}}</text>
+      </button>
+      <button
+        class="interaction-button"
+        hover-class="none"
+        data-action="FAVORITE"
+        bindtap="toggleInteraction"
+      >
+        <image
+          class="interaction-icon"
+          src="{{isFavorited ? '/assets/icons/favorite-filled.svg' : '/assets/icons/favorite-outline.svg'}}"
+          mode="aspectFit"
+        />
+        <text class="interaction-label">收藏</text>
+        <text class="interaction-count">{{checkpoint.favoriteCount}}</text>
+      </button>
+      <button class="interaction-button" hover-class="none" bindtap="openShareDialog">
+        <image class="interaction-icon" src="/assets/icons/share-outline.svg" mode="aspectFit" />
+        <text class="interaction-label">转发</text>
+        <text class="interaction-count">{{checkpoint.shareCount}}</text>
+      </button>
+      <view class="interaction-button">
+        <image class="interaction-icon" src="/assets/icons/view-outline.svg" mode="aspectFit" />
+        <text class="interaction-label">浏览</text>
+        <text class="interaction-count">{{checkpoint.viewCount}}</text>
+      </view>
+    </view>
+
     <view class="actions">
       <button class="secondary-action" bindtap="addToRoute">加入路线</button>
       <button class="primary-action" bindtap="createSchedule">创建安排</button>
     </view>
   </view>
 </scroll-view>
+
+<view
+  wx:if="{{showShareDialog}}"
+  class="share-dialog-mask"
+  bindtap="closeShareDialog"
+>
+  <view class="share-dialog" catchtap="preventShareDialogClose">
+    <text class="share-dialog-title">选择分享方式</text>
+    <view class="share-option">
+      <button
+        class="share-option-button"
+        hover-class="share-option-button-hover"
+        open-type="share"
+      >
+        <image
+          class="share-option-icon"
+          src="/assets/icons/wechat-share.jpg"
+          mode="aspectFill"
+        />
+      </button>
+      <text class="share-option-label">wx</text>
+    </view>
+  </view>
+</view>

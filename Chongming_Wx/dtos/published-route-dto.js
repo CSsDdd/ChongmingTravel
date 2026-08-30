@@ -55,6 +55,7 @@ function createPublishedRouteDto(routeInput, versionInput) {
     likedUserIds: [...route.likedUserIds],
     shareCount: route.shareCount,
     favoriteCount: route.favoriteCount,
+    viewCount: route.viewCount,
     createdAtEpochMillis: route.createdAtEpochMillis,
     publishedAtEpochMillis: version.publishedAtEpochMillis,
   }
