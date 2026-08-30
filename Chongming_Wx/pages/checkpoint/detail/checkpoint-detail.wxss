@@ -63,6 +63,135 @@
   line-height: 1.7;
 }
 
+.interaction-divider {
+  margin-bottom: 0;
+}
+
+.interaction-panel {
+  display: flex;
+  padding: 30rpx 0;
+}
+
+.interaction-button {
+  display: flex;
+  width: 0;
+  min-width: 0;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 14rpx 8rpx;
+  box-sizing: border-box;
+  color: #526057;
+  font-size: 23rpx;
+  line-height: 1;
+  background: transparent;
+  gap: 8rpx;
+}
+
+.interaction-button + .interaction-button {
+  border-left: 1rpx solid #edf0ec;
+  border-radius: 0;
+}
+
+.interaction-button::after {
+  border: none;
+}
+
+.interaction-icon {
+  width: 34rpx;
+  height: 34rpx;
+  flex: none;
+}
+
+.interaction-label {
+  white-space: nowrap;
+}
+
+.interaction-count {
+  overflow: hidden;
+  max-width: 64rpx;
+  color: #8a928b;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.share-dialog-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32rpx;
+  background: rgba(24, 31, 27, 0.38);
+}
+
+.share-dialog {
+  display: flex;
+  width: 520rpx;
+  min-height: 300rpx;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 28rpx;
+  box-sizing: border-box;
+  background: #ffffff;
+}
+
+.share-dialog-title {
+  color: #252c27;
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.share-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 36rpx;
+}
+
+.share-option-button {
+  display: flex;
+  width: 112rpx;
+  min-width: 112rpx;
+  max-width: 112rpx;
+  height: 112rpx;
+  flex: 0 0 112rpx;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border-radius: 50%;
+  line-height: 1;
+  background: #20c600;
+}
+
+.share-option-button::after {
+  border: none;
+}
+
+.share-option-icon {
+  width: 150rpx;
+  height: 150rpx;
+  flex: none;
+}
+
+.share-option-label {
+  margin-top: 14rpx;
+  color: #526057;
+  font-size: 24rpx;
+}
+
+.share-option-button-hover {
+  opacity: 0.82;
+}
+
 .actions {
   display: flex;
   gap: 20rpx;

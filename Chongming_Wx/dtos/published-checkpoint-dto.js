@@ -45,6 +45,7 @@ function createPublishedCheckpointDto(checkpointInput, versionInput) {
     likedUserIds: [...checkpoint.likedUserIds],
     shareCount: checkpoint.shareCount,
     favoriteCount: checkpoint.favoriteCount,
+    viewCount: checkpoint.viewCount,
     publishedAtEpochMillis: version.publishedAtEpochMillis,
   }
 }

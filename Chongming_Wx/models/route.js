@@ -64,6 +64,7 @@ function createEngagementFields(input) {
     likedUserIds,
     shareCount: normalizeCount(input.shareCount),
     favoriteCount: normalizeCount(input.favoriteCount),
+    viewCount: normalizeCount(input.viewCount),
   }
 }
 

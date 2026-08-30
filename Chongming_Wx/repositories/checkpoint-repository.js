@@ -522,6 +522,40 @@ async function getPublishedCheckpointDTO(checkpointId, version) {
   return clone(createPublishedCheckpointDto(checkpoint, checkpointVersion))
 }
 
+async function incrementViewCount(checkpointId) {
+  const state = loadState()
+  const checkpointIndex = state.checkpoints.findIndex(item => (
+    item.id === checkpointId
+  ))
+  if (checkpointIndex < 0) {
+    throw new Error('要记录浏览量的公开打卡点不存在')
+  }
+  const checkpoint = createCheckpoint({
+    ...state.checkpoints[checkpointIndex],
+    viewCount: state.checkpoints[checkpointIndex].viewCount + 1,
+  })
+  state.checkpoints[checkpointIndex] = checkpoint
+  saveState(state)
+  return checkpoint.viewCount
+}
+
+async function incrementShareCount(checkpointId) {
+  const state = loadState()
+  const checkpointIndex = state.checkpoints.findIndex(item => (
+    item.id === checkpointId
+  ))
+  if (checkpointIndex < 0) {
+    throw new Error('要记录转发量的公开打卡点不存在')
+  }
+  const checkpoint = createCheckpoint({
+    ...state.checkpoints[checkpointIndex],
+    shareCount: state.checkpoints[checkpointIndex].shareCount + 1,
+  })
+  state.checkpoints[checkpointIndex] = checkpoint
+  saveState(state)
+  return checkpoint.shareCount
+}
+
 /**
  * @param {{ text?: string }} query //简单声明query，字段可添加
  */
@@ -573,6 +607,8 @@ module.exports = {
   findVersion,
   getPublishedCheckpointDTO,
   getPublishedCheckpointDTOs,
+  incrementShareCount,
+  incrementViewCount,
   searchPublished,
   searchPublishedCheckpointDTOs,
   submitDraftForReview,

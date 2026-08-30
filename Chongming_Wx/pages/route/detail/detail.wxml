@@ -1,2 +1,157 @@
-<!--pages/route/detail/detail.wxml-->
-<text>pages/route/detail/detail.wxml</text>
+<view class="route-detail-page">
+  <view
+    class="route-toolbar"
+    style="height: {{navigationBarHeight}}px; padding-top: {{statusBarHeight}}px; padding-right: {{toolbarRightInset}}px;"
+  >
+    <view class="toolbar-back" bindtap="goBack">‹</view>
+    <text class="toolbar-title">{{route.title || '路线详情'}}</text>
+    <view class="toolbar-spacer" />
+  </view>
+
+  <scroll-view class="route-scroll" scroll-y enhanced show-scrollbar="{{false}}">
+    <view class="route-content" style="padding-top: {{contentTop}}px;">
+      <view wx:if="{{isLoading}}" class="state-message">正在加载路线…</view>
+      <view wx:elif="{{missing}}" class="state-message">没有找到这条公开路线</view>
+
+      <block wx:else>
+        <view class="cover-card">
+          <image
+            wx:if="{{coverImageUrl}}"
+            class="cover-image"
+            src="{{coverImageUrl}}"
+            mode="aspectFill"
+            binderror="onCoverImageError"
+          />
+          <view wx:else class="cover-placeholder">路线探索</view>
+        </view>
+
+        <view class="route-overview">
+          <text class="route-title">{{route.title}}</text>
+          <text class="route-description">{{route.description}}</text>
+          <view wx:if="{{route.tagIds.length}}" class="route-tags">
+            <text class="route-tag" wx:for="{{route.tagIds}}" wx:key="*this">#{{item}}</text>
+          </view>
+          <view class="route-byline">
+            <text>{{authorName}}</text>
+            <text wx:if="{{publishedAtText}}">发布于 {{publishedAtText}}</text>
+          </view>
+          <view wx:if="{{route.note}}" class="route-note">{{route.note}}</view>
+        </view>
+
+        <view class="content-divider overview-divider" />
+
+        <view class="section-heading">
+          <text class="section-title">路线节点</text>
+          <text class="section-count">{{route.checkpointCount}} 个打卡点</text>
+        </view>
+
+        <view wx:if="{{!stops.length}}" class="empty-route">这条路线暂时没有节点</view>
+        <view wx:else class="stops-list">
+          <block wx:for="{{stops}}" wx:key="viewKey">
+            <view
+              class="stop-card {{item.isAvailable ? '' : 'stop-card-unavailable'}}"
+              data-id="{{item.checkpointId}}"
+              data-version="{{item.checkpointVersion}}"
+              data-available="{{item.isAvailable}}"
+              bindtap="openCheckpoint"
+            >
+              <view class="stop-heading-row">
+                <text class="stop-order">{{item.orderLabel}}</text>
+                <view class="stop-heading-copy">
+                  <text class="stop-title">{{item.title}}</text>
+                  <text wx:if="{{item.locationName}}" class="stop-location">{{item.locationName}}</text>
+                </view>
+                <text wx:if="{{item.isAvailable}}" class="stop-arrow">›</text>
+              </view>
+              <view class="stop-content-row">
+                <image
+                  wx:if="{{item.imageUrl}}"
+                  class="stop-overview-image"
+                  src="{{item.imageUrl}}"
+                  mode="aspectFill"
+                  data-index="{{index}}"
+                  binderror="onStopImageError"
+                />
+                <view wx:else class="stop-overview-placeholder">暂无图片</view>
+                <text class="stop-note">{{item.note || '暂无路线说明'}}</text>
+              </view>
+            </view>
+
+            <view wx:if="{{index < stops.length - 1}}" class="route-connector">
+              <text class="traffic-label">{{item.trafficToNextLabel}}</text>
+            </view>
+          </block>
+        </view>
+
+        <view class="content-divider interaction-divider" />
+
+        <view class="interaction-panel">
+          <button
+            class="interaction-button"
+            hover-class="none"
+            data-action="LIKE"
+            bindtap="toggleInteraction"
+          >
+            <image
+              class="interaction-icon"
+              src="{{isLiked ? '/assets/icons/like-filled.svg' : '/assets/icons/like-outline.svg'}}"
+              mode="aspectFit"
+            />
+            <text class="interaction-label">喜欢</text>
+            <text class="interaction-count">{{route.likeCount}}</text>
+          </button>
+          <button
+            class="interaction-button"
+            hover-class="none"
+            data-action="FAVORITE"
+            bindtap="toggleInteraction"
+          >
+            <image
+              class="interaction-icon"
+              src="{{isFavorited ? '/assets/icons/favorite-filled.svg' : '/assets/icons/favorite-outline.svg'}}"
+              mode="aspectFit"
+            />
+            <text class="interaction-label">收藏</text>
+            <text class="interaction-count">{{route.favoriteCount}}</text>
+          </button>
+          <button class="interaction-button" hover-class="none" bindtap="openShareDialog">
+            <image class="interaction-icon" src="/assets/icons/share-outline.svg" mode="aspectFit" />
+            <text class="interaction-label">转发</text>
+            <text class="interaction-count">{{route.shareCount}}</text>
+          </button>
+          <view class="interaction-button">
+            <image class="interaction-icon" src="/assets/icons/view-outline.svg" mode="aspectFit" />
+            <text class="interaction-label">浏览</text>
+            <text class="interaction-count">{{route.viewCount}}</text>
+          </view>
+        </view>
+
+        <button class="schedule-button" bindtap="importSchedule">导入安排</button>
+      </block>
+    </view>
+  </scroll-view>
+
+  <view
+    wx:if="{{showShareDialog}}"
+    class="share-dialog-mask"
+    bindtap="closeShareDialog"
+  >
+    <view class="share-dialog" catchtap="preventShareDialogClose">
+      <text class="share-dialog-title">选择分享方式</text>
+      <view class="share-option">
+        <button
+          class="share-option-button"
+          hover-class="share-option-button-hover"
+          open-type="share"
+        >
+          <image
+            class="share-option-icon"
+            src="/assets/icons/wechat-share.jpg"
+            mode="aspectFill"
+          />
+        </button>
+        <text class="share-option-label">wx</text>
+      </view>
+    </view>
+  </view>
+</view>
