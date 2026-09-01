@@ -1,7 +1,10 @@
 const {
   createInitialScheduleState,
 } = require('../data/seeds/schedule-seed')
-const { createSchedule } = require('../models/schedule')
+const {
+  createSchedule,
+  createScheduleTargetRef,
+} = require('../models/schedule')
 const userRepository = require('./user-repository')
 
 const STORAGE_KEY = 'sample-schedule-repository-v1'
@@ -89,6 +92,22 @@ async function findByOwnerAndRange(ownerUserId, rangeStart, rangeEnd) {
   return clone(schedules)
 }
 
+// 查询所有引用同一类型、内容身份和版本的安排。
+async function findByTargetRef(targetRef) {
+  const normalizedRef = createScheduleTargetRef(targetRef)
+  const schedules = loadState().schedules
+    .filter(item => (
+      item.targetRef.type === normalizedRef.type
+      && item.targetRef.id === normalizedRef.id
+      && item.targetRef.version === normalizedRef.version
+    ))
+    .sort((left, right) => (
+      left.startAtEpochMillis - right.startAtEpochMillis
+      || left.id.localeCompare(right.id)
+    ))
+  return clone(schedules)
+}
+
 // 创建新的安排记录
 async function create(scheduleInput) {
   if (!scheduleInput || typeof scheduleInput !== 'object') {// 基础检查：输入必须是非空对象
@@ -144,5 +163,6 @@ module.exports = {
   create,
   findById,
   findByOwnerAndRange,
+  findByTargetRef,
   update,
 }
