@@ -1,4 +1,5 @@
 const checkpointRepository = require('../../../repositories/checkpoint-repository')
+const routeRepository = require('../../../repositories/route-repository')
 const scheduleRepository = require('../../../repositories/schedule-repository')
 const userRepository = require('../../../repositories/user-repository')
 const {
@@ -65,13 +66,59 @@ function createDraft(data) {
   }
 }
 
+// 根据安排目标类型，从对应仓库解析编辑页需要展示的内容
+async function findScheduleTarget(targetRef) {
+  if (targetRef.type === ScheduleTargetType.CHECKPOINT) {
+    const draft = await checkpointRepository.findDraft(targetRef.id)
+    if (draft && draft.version === targetRef.version) return draft
+    return checkpointRepository.findVersion(targetRef.id, targetRef.version)
+  }
+  if (targetRef.type === ScheduleTargetType.PERSONAL_ROUTE) {
+    const draft = await routeRepository.findDraft(targetRef.id)
+    if (draft && draft.version === targetRef.version) return draft
+    return routeRepository.findVersion(targetRef.id, targetRef.version)
+  }
+  return null
+}
+
+// 将 route 详情页传入的查询参数还原为个人路线引用
+function parseRouteTarget(options) {
+  if (options.targetType !== ScheduleTargetType.PERSONAL_ROUTE) return null
+  const id = options.targetId ? decodeURIComponent(options.targetId) : ''
+  const version = Number(options.targetVersion)
+  if (!id || !Number.isInteger(version) || version < 1) {
+    throw new Error('导入的路线引用无效')
+  }
+  return {
+    type: ScheduleTargetType.PERSONAL_ROUTE,
+    id,
+    version,
+  }
+}
+
+// 将 checkpoint 详情页传入的查询参数还原为打卡点引用
+function parseCheckpointTarget(options) {
+  if (options.targetType !== ScheduleTargetType.CHECKPOINT) return null
+  const id = options.targetId ? decodeURIComponent(options.targetId) : ''
+  const version = Number(options.targetVersion)
+  if (!id || !Number.isInteger(version) || version < 1) {
+    throw new Error('导入的打卡点引用无效')
+  }
+  return {
+    type: ScheduleTargetType.CHECKPOINT,
+    id,
+    version,
+  }
+}
+
 Page({
   data: {
     mode: 'create',
     scheduleId: '',
     currentUser: null,
     targetRef: null,
-    selectedTargetTitle: '请选择打卡点',
+    selectedTargetTitle: '请选择安排目标',
+    canSelectTarget: true,
     startDate: '',
     startTime: '09:00',
     endDate: '',
@@ -115,18 +162,27 @@ Page({
         await this.loadExistingSchedule(options.scheduleId, currentUser)
         return
       }
-      this.loadNewSchedule(options.date, currentUser)
+      await this.loadNewSchedule(options, currentUser)
     } catch (error) {
       wx.showToast({ title: error.message || '安排加载失败', icon: 'none' })
       this.setData({ isLoading: false })
     }
   },
 
-  loadNewSchedule(date, currentUser) {
-    const selectedDate = normalizeLocalDateKey(date)
+  async loadNewSchedule(options, currentUser) {
+    const selectedDate = normalizeLocalDateKey(options.date)
+    const targetRef = parseRouteTarget(options) || parseCheckpointTarget(options)
+    const target = targetRef ? await findScheduleTarget(targetRef) : null
+    if (targetRef && !target) {
+      throw new Error('导入的安排目标当前不可用')
+    }
     this.setData({
       mode: 'create',
       currentUser,
+      targetRef,
+      selectedTargetTitle: target ? target.title : '请选择安排目标',
+      targetHint: target ? '已从路线工作区导入' : '可选择公开打卡点或我的草稿',
+      canSelectTarget: !target,
       startDate: selectedDate,
       endDate: selectedDate,
       isLoading: false,
@@ -138,16 +194,9 @@ Page({
     if (!schedule || schedule.ownerUserId !== currentUser.id) {
       throw new Error('没有找到可编辑的安排')
     }
-    if (schedule.targetRef.type !== ScheduleTargetType.CHECKPOINT) {
-      throw new Error('当前版本暂不支持编辑路线安排')
-    }
-
-    const target = await checkpointRepository.findVersion(
-      schedule.targetRef.id,
-      schedule.targetRef.version
-    )
+    const target = await findScheduleTarget(schedule.targetRef)
     if (!target) {
-      throw new Error('安排引用的打卡点版本当前不可用')
+      throw new Error('安排引用的目标当前不可用')
     }
 
     const startDateTime = new Date(schedule.startAtEpochMillis)
@@ -158,6 +207,10 @@ Page({
       currentUser,
       targetRef: schedule.targetRef,
       selectedTargetTitle: target.title,
+      targetHint: schedule.targetRef.type === ScheduleTargetType.PERSONAL_ROUTE
+        ? '个人路线'
+        : '打卡点',
+      canSelectTarget: false,
       startDate: toLocalDateKey(startDateTime),
       startTime: toLocalTimeKey(startDateTime),
       endDate: toLocalDateKey(endDateTime),
@@ -181,19 +234,17 @@ Page({
     }, () => this.rememberInitialDraft())
   },
 
-  openCheckpointPicker() {
+  openScheduleTargetPicker() {
+    if (!this.data.canSelectTarget) return
 
     wx.navigateTo({
-      url: '/pages/checkpoint/picker/checkpoint-picker',
+      url: '/pages/schedule/target-picker/target-picker',
       events: {
-        checkpointSelected: checkpoint => {
+        scheduleTargetSelected: target => {
           this.setData({
-            targetRef: {
-              type: ScheduleTargetType.CHECKPOINT,
-              id: checkpoint.id,
-              version: checkpoint.version,
-            },
-            selectedTargetTitle: checkpoint.title,
+            targetRef: target.targetRef,
+            selectedTargetTitle: target.title,
+            targetHint: `${target.typeLabel} · ${target.sourceLabel}`,
           }, () => this.updateUnsavedWarning())
         },
       },

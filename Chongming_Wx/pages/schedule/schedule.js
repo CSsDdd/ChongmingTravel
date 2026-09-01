@@ -1,6 +1,8 @@
-const { findVersion } = require('../../repositories/checkpoint-repository')
+const checkpointRepository = require('../../repositories/checkpoint-repository')
+const routeRepository = require('../../repositories/route-repository')
 const { findByOwnerAndRange } = require('../../repositories/schedule-repository')
 const userRepository = require('../../repositories/user-repository')
+const { ScheduleTargetType } = require('../../models/schedule')
 const {
   formatLocalDateLabel,
   normalizeLocalDateKey,
@@ -45,12 +47,24 @@ function formatTime(epochMillis) {
   return `${hour}:${minute}`
 }
 
+// Schedule 只保存目标引用，列表展示时再按类型解析目标标题
+async function findScheduleTarget(targetRef) {
+  if (targetRef.type === ScheduleTargetType.CHECKPOINT) {
+    const draft = await checkpointRepository.findDraft(targetRef.id)
+    if (draft && draft.version === targetRef.version) return draft
+    return checkpointRepository.findVersion(targetRef.id, targetRef.version)
+  }
+  if (targetRef.type === ScheduleTargetType.PERSONAL_ROUTE) {
+    const draft = await routeRepository.findDraft(targetRef.id)
+    if (draft && draft.version === targetRef.version) return draft
+    return routeRepository.findVersion(targetRef.id, targetRef.version)
+  }
+  return null
+}
+
 async function toScheduleCard(schedule, currentUserId) {
   const isOwner = schedule.ownerUserId === currentUserId
-  const target = await findVersion(
-    schedule.targetRef.id,
-    schedule.targetRef.version
-  )
+  const target = await findScheduleTarget(schedule.targetRef)
 
   const planningText = (
     PLANNING_STATUS_TEXT[schedule.planningStatus]

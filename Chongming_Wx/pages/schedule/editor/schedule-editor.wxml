@@ -6,15 +6,12 @@
       <text class="section-title">安排目标</text>
       <view
         class="select-field"
-        bindtap="openCheckpointPicker"
+        bindtap="openScheduleTargetPicker"
       >
         <view class="select-content">
           <text class="select-value">{{selectedTargetTitle}}</text>
-          <text class="field-hint">
-            当前阶段仅支持打卡点          
-          </text>
         </view>
-        <text wx:if="{{mode === 'create'}}" class="select-arrow">›</text>
+        <text wx:if="{{canSelectTarget}}" class="select-arrow">›</text>
       </view>
     </view>
 
@@ -45,7 +42,6 @@
       <view class="setting-row">
         <view class="setting-copy">
           <text class="field-label">可见性</text>
-          <text class="field-hint">公开安排之后可以用于寻找同行者</text>
         </view>
         <picker range="{{visibilityOptions}}" range-key="label" value="{{visibilityIndex}}" bindchange="onVisibilityChange">
           <view class="setting-value">{{visibilityOptions[visibilityIndex].label}} ›</view>
@@ -54,7 +50,6 @@
       <view class="setting-row">
         <view class="setting-copy">
           <text class="field-label">同行招募</text>
-          <text class="field-hint">感兴趣或已确认的公开安排可以招募</text>
         </view>
         <picker
           disabled="{{!canRecruit}}"
@@ -71,7 +66,6 @@
       <view class="setting-row">
         <view class="setting-copy">
           <text class="field-label">安排状态</text>
-          <text class="field-hint">用于标记安排已经完成或取消</text>
         </view>
         <picker range="{{planningOptions}}" range-key="label" value="{{planningIndex}}" bindchange="onPlanningChange">
           <view class="setting-value">{{planningOptions[planningIndex].label}} ›</view>
@@ -85,7 +79,7 @@
         class="note-input"
         value="{{sharedNote}}"
         maxlength="300"
-        placeholder="写下可以与同行者共享的信息"
+        placeholder="写下与同行者共享的信息~"
         data-field="sharedNote"
         bindinput="onNoteInput"
       />
@@ -97,7 +91,7 @@
         class="note-input"
         value="{{privateNote}}"
         maxlength="300"
-        placeholder="只有自己可以看到"
+        placeholder="写下仅给自己看的信息~"
         data-field="privateNote"
         bindinput="onNoteInput"
       />

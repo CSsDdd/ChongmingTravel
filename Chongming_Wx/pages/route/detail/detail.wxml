@@ -126,7 +126,12 @@
           </view>
         </view>
 
-        <button class="schedule-button" bindtap="importSchedule">导入安排</button>
+        <button
+          class="schedule-button"
+          loading="{{isImportingSchedule}}"
+          disabled="{{isImportingSchedule}}"
+          bindtap="importSchedule"
+        >{{isImportingSchedule ? '正在导入...' : '导入安排'}}</button>
       </block>
     </view>
   </scroll-view>

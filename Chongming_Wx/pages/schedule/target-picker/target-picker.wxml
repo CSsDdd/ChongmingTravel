@@ -1,0 +1,58 @@
+<view class="picker-page">
+  <view class="picker-header">
+    <input
+      class="search-entry"
+      value="{{query.text}}"
+      bindinput="handleInput"
+      placeholder="搜索安排目标"
+    />
+    <view class="type-filter">
+      <view
+        class="type-chip {{query.targetType === item.value ? 'type-chip-active' : ''}}"
+        wx:for="{{typeOptions}}"
+        wx:key="value"
+        data-type="{{item.value}}"
+        bindtap="selectTargetType"
+      >{{item.label}}</view>
+    </view>
+  </view>
+
+  <scroll-view class="picker-content" scroll-y>
+    <view wx:if="{{isLoading}}" class="state-message">正在加载安排目标...</view>
+    <view wx:elif="{{targets.length === 0}}" class="state-message">
+      没有找到相关安排目标
+    </view>
+
+    <view wx:else class="target-list">
+      <view
+        class="target-card"
+        wx:for="{{targets}}"
+        wx:key="viewKey"
+        data-index="{{index}}"
+        bindtap="selectTarget"
+      >
+        <image
+          wx:if="{{item.imageUrl}}"
+          class="target-image"
+          src="{{item.imageUrl}}"
+          mode="aspectFill"
+          data-index="{{index}}"
+          binderror="onTargetImageError"
+        />
+        <view wx:else class="target-placeholder">户外探索</view>
+
+        <view class="target-content">
+          <view class="target-heading">
+            <text class="target-title">{{item.title}}</text>
+            <view class="source-badge {{item.source === 'OWN_DRAFT' ? 'source-badge-draft' : ''}}">
+              <text class="source-badge-text">{{item.sourceLabel}}</text>
+            </view>
+          </view>
+          <text class="target-meta">{{item.typeLabel}} · {{item.metaText}}</text>
+          <text class="target-summary">{{item.summary || '暂无简介'}}</text>
+          <text wx:if="{{item.tagText}}" class="target-tags">{{item.tagText}}</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>
