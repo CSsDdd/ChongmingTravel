@@ -1,10 +1,12 @@
 const routeRepository = require('../../../repositories/route-repository')
 const checkpointRepository = require('../../../repositories/checkpoint-repository')
+const scheduleRepository = require('../../../repositories/schedule-repository')
 const {
   RouteDraftReviewStatus,
   RouteTrafficMode,
   createRouteStop,
 } = require('../../../models/route')
+const { ScheduleTargetType } = require('../../../models/schedule')
 const {
   resolveImageUrl,
   saveLocalFile,
@@ -518,13 +520,35 @@ Page({
     return input
   },
 
+  async confirmReferencedScheduleChanges() {
+    if (!this.data.routeId || !this.hasUnsavedChanges) return true
+    const schedules = await scheduleRepository.findByTargetRef({
+      type: ScheduleTargetType.PERSONAL_ROUTE,
+      id: this.data.routeId,
+      version: this.data.version,
+    })
+    if (schedules.length === 0) return true
+
+    const result = await wx.showModal({
+      title: '路线已用于安排',
+      content: `这条路线已用于 ${schedules.length} 个安排。继续保存后，这些安排中显示的路线内容也会更新。`,
+      confirmText: '继续保存',
+      cancelText: '暂不保存',
+      confirmColor: '#2f6f4e',
+    })
+    return result.confirm
+  },
+
   async saveRoute() {
     if (this.data.isSaving || this.data.isSubmitting || this.data.isReadOnly) {
       return
     }
     this.setData({ isSaving: true })
     try {
-      const savedDraft = await routeRepository.update(this.createRouteInput())
+      const routeInput = this.createRouteInput()
+      const canSave = await this.confirmReferencedScheduleChanges()
+      if (!canSave) return
+      const savedDraft = await routeRepository.update(routeInput)
       this.hasUnsavedChanges = false
       wx.disableAlertBeforeUnload()
       this.setData({
