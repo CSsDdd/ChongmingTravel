@@ -1,8 +1,10 @@
 const checkpointRepository = require('../../../repositories/checkpoint-repository')
+const scheduleRepository = require('../../../repositories/schedule-repository')
 const {
   CheckpointDraftReviewStatus,
   CoordinateSystem,
 } = require('../../../models/checkpoint')
+const { ScheduleTargetType } = require('../../../models/schedule')
 const { saveLocalFile } = require('../../../utils/local-media')
 
 function createFormDraft(data) {
@@ -256,6 +258,25 @@ Page({
     return input
   },
 
+  async confirmReferencedScheduleChanges() {
+    if (!this.data.checkpointId || !this.hasUnsavedChanges) return true
+    const schedules = await scheduleRepository.findByTargetRef({
+      type: ScheduleTargetType.CHECKPOINT,
+      id: this.data.checkpointId,
+      version: this.data.version,
+    })
+    if (schedules.length === 0) return true
+
+    const result = await wx.showModal({
+      title: '打卡点已用于安排',
+      content: `这个打卡点已用于 ${schedules.length} 个安排。继续保存后，这些安排中显示的打卡点内容也会更新。`,
+      confirmText: '继续保存',
+      cancelText: '暂不保存',
+      confirmColor: '#2f6f4e',
+    })
+    return result.confirm
+  },
+
   async saveCheckpoint() {
     if (this.data.isSaving || this.data.isSubmitting || this.data.isDeleting) {
       return
@@ -266,9 +287,10 @@ Page({
     }
     this.setData({ isSaving: true })
     try {
-      const savedDraft = await checkpointRepository.update(
-        this.createCheckpointInput()
-      )
+      const checkpointInput = this.createCheckpointInput()
+      const canSave = await this.confirmReferencedScheduleChanges()
+      if (!canSave) return
+      const savedDraft = await checkpointRepository.update(checkpointInput)
       this.hasUnsavedChanges = false
       wx.disableAlertBeforeUnload()
       this.setData({
