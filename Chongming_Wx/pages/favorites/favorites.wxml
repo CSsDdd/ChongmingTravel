@@ -1,4 +1,71 @@
-<view class="placeholder">
-  <text class="placeholder-title">收藏</text>
-  <text class="placeholder-text">收藏的打卡点将在这里显示。</text>
+<view class="favorites-page">
+  <view class="favorites-header">
+    <view class="search-entry">
+      <text class="search-icon">⌕</text>
+      <input
+        class="search-input"
+        value="{{query.text}}"
+        placeholder="搜索我的收藏"
+        confirm-type="search"
+        bindinput="handleInput"
+      />
+    </view>
+
+    <view class="type-tabs">
+      <view
+        class="type-tab {{query.targetType === item.value ? 'type-tab-active' : ''}}"
+        wx:for="{{typeOptions}}"
+        wx:key="value"
+        data-type="{{item.value}}"
+        bindtap="selectTargetType"
+      >{{item.label}}</view>
+    </view>
+  </view>
+
+  <scroll-view class="favorites-content" scroll-y>
+    <view wx:if="{{isLoading}}" class="state-text">正在加载收藏...</view>
+    <view
+      wx:elif="{{favorites.length === 0}}"
+      class="state-text"
+    >{{emptyText}}</view>
+
+    <view wx:else class="favorite-grid">
+      <view
+        class="card"
+        wx:for="{{favorites}}"
+        wx:key="key"
+        data-index="{{index}}"
+        bindtap="openFavorite"
+      >
+        <view class="card-image-wrap">
+          <image
+            wx:if="{{item.imageUrl}}"
+            class="card-image"
+            src="{{item.imageUrl}}"
+            mode="aspectFill"
+            data-index="{{index}}"
+            binderror="onFavoriteImageError"
+          />
+          <view wx:else class="card-placeholder">
+            {{item.type === 'ROUTE' ? '路线探索' : '户外探索'}}
+          </view>
+          <text
+            wx:if="{{query.targetType === 'ALL'}}"
+            class="type-badge"
+          >{{item.typeLabel}}</text>
+        </view>
+
+        <view class="card-content">
+          <text class="card-title">{{item.title}}</text>
+          <text wx:if="{{item.metaText}}" class="card-meta">
+            {{item.metaText}}
+          </text>
+          <text class="card-description">{{item.summary}}</text>
+          <text wx:if="{{item.tagText}}" class="card-tags">
+            {{item.tagText}}
+          </text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
 </view>
