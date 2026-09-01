@@ -6,6 +6,7 @@
     "pages/user/profile/profile",
     "pages/schedule/schedule",
     "pages/schedule/editor/schedule-editor",
+    "pages/schedule/target-picker/target-picker",
     "pages/user/profile-editor/profile-editor",
     "pages/user/user-editor/user-editor",
     "pages/editor/editor",

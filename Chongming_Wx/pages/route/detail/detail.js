@@ -6,6 +6,7 @@ const {
   InteractionActionType,
   InteractionTargetType,
 } = require('../../../models/content-interaction')
+const { ScheduleTargetType } = require('../../../models/schedule')
 const { resolveImageUrl } = require('../../../utils/local-media')
 
 const TRAFFIC_MODE_LABELS = {
@@ -74,6 +75,7 @@ Page({
     isLiked: false,
     isFavorited: false,
     isInteractionBusy: false,
+    isImportingSchedule: false,
     showShareDialog: false,
     isLoading: true,
     missing: false,
@@ -233,8 +235,39 @@ Page({
     return shareData
   },
 
-  importSchedule() {
-    wx.showToast({ title: '导入安排功能待实现', icon: 'none' })
+  async importSchedule() {
+    if (this.data.isImportingSchedule) return
+    if (!this.data.currentUserId) {
+      wx.showToast({ title: '登录后才能导入安排', icon: 'none' })
+      return
+    }
+
+    const route = this.data.route
+    const sourceRef = this.shareRouteParams
+    if (!route || !sourceRef) return
+
+    this.setData({ isImportingSchedule: true })
+    try {
+      // 自己的路线优先复用工作区草稿，其他公开路线复制为新的个人路线
+      let draft = route.ownerUserId === this.data.currentUserId
+        ? await routeRepository.findDraft(route.routeId)
+        : null
+      if (!draft) {
+        draft = await routeRepository.createDerivedDraftRoute(sourceRef)
+      }
+      const query = [
+        `targetType=${ScheduleTargetType.PERSONAL_ROUTE}`,
+        `targetId=${encodeURIComponent(draft.routeId)}`,
+        `targetVersion=${draft.version}`,
+      ].join('&')
+      wx.navigateTo({
+        url: `/pages/schedule/editor/schedule-editor?${query}`,
+      })
+    } catch (error) {
+      wx.showToast({ title: error.message || '路线导入失败', icon: 'none' })
+    } finally {
+      this.setData({ isImportingSchedule: false })
+    }
   },
 
   goBack() {

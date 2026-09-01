@@ -6,7 +6,9 @@ const {
   InteractionTargetType,
 } = require('../../../models/content-interaction')
 const { withImageUrl } = require('../../../utils/local-media')
-
+const {
+  ScheduleTargetType
+} = require('../../../models/schedule')
 Page({
   data: {
     checkpoint: null,
@@ -17,6 +19,7 @@ Page({
     showShareDialog: false,
     loading: true,
     missing: false,
+    isImportingSchedule: false,
   },
 
   async onLoad(options) {
@@ -157,11 +160,29 @@ Page({
     return shareData
   },
 
-  addToRoute() {
-    wx.showToast({ title: '已加入路线', icon: 'success' })
-  },
-
-  createSchedule() {
-    wx.showToast({ title: '安排功能待实现', icon: 'none' })
+  async importSchedule() {
+    if (this.data.isImportingSchedule == true) return
+    if (!this.data.currentUserId) {
+      wx.showToast({ title: '登录后才能导入安排', icon: 'none' })
+      return
+    }
+    const checkpoint = this.data.checkpoint
+    if (!checkpoint) return
+    this.setData({ isImportingSchedule: true })
+    try {
+      const query = [
+        `targetType=${ScheduleTargetType.CHECKPOINT}`,
+        `targetId=${encodeURIComponent(checkpoint.checkpointId)}`,
+        `targetVersion=${checkpoint.version}`,
+      ].join('&')
+      
+      wx.navigateTo({
+        url: `/pages/schedule/editor/schedule-editor?${query}`,
+      })
+    } catch (error) {
+      wx.showToast({ title: error.message || '打卡点导入失败', icon: 'none' })
+    } finally {
+      this.setData({ isImportingSchedule: false })
+    }
   },
 })

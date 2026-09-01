@@ -64,8 +64,7 @@
     </view>
 
     <view class="actions">
-      <button class="secondary-action" bindtap="addToRoute">加入路线</button>
-      <button class="primary-action" bindtap="createSchedule">创建安排</button>
+      <button class="primary-action" bindtap="importSchedule">创建安排</button>
     </view>
   </view>
 </scroll-view>

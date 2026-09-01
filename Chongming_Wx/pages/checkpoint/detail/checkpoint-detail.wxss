@@ -204,12 +204,6 @@
   font-size: 28rpx;
 }
 
-.secondary-action {
-  color: #2f6f4e;
-  background: #ffffff;
-  border: 2rpx solid #2f6f4e;
-}
-
 .primary-action {
   color: #ffffff;
   background: #2f6f4e;
