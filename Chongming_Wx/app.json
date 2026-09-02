@@ -15,6 +15,7 @@
     "pages/discovery/search/discovery-search",
     "pages/checkpoint/picker/checkpoint-picker",
     "pages/route/editor/editor",
+    "pages/route/picker/route-picker",
     "pages/route/detail/detail"
   ],
   "window": {
