@@ -97,6 +97,32 @@ Page({
   },
 
   copyPublishedRoute() {
-    wx.showToast({ title: '路线选择页待接入', icon: 'none' })
+    wx.navigateTo({
+      url: '/pages/route/picker/route-picker',
+      events: {
+        routeSelected: sourceRouteRef => {
+          this.createRouteCopy(sourceRouteRef)
+        },
+      },
+    })
+  },
+
+  async createRouteCopy(sourceRouteRef) {
+    if (this.isCopyingRoute) return
+    this.isCopyingRoute = true
+    wx.showLoading({ title: '正在复制路线' })
+    try {
+      const draft = await routeRepository.createDerivedDraftRoute(
+        sourceRouteRef
+      )
+      wx.navigateTo({
+        url: `/pages/route/editor/editor?routeId=${encodeURIComponent(draft.routeId)}`,
+      })
+    } catch (error) {
+      wx.showToast({ title: error.message || '路线复制失败', icon: 'none' })
+    } finally {
+      this.isCopyingRoute = false
+      wx.hideLoading()
+    }
   },
 })

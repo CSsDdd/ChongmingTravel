@@ -1,0 +1,48 @@
+<view class="picker-page">
+  <view class="search-header">
+    <input
+      class="search-entry"
+      value="{{query.text}}"
+      bindinput="handleInput"
+      placeholder="搜索想复制的路线"
+      confirm-type="search"
+    />
+  </view>
+
+  <scroll-view class="picker-content" scroll-y>
+    <view wx:if="{{isLoading}}" class="empty-state">正在加载路线...</view>
+    <view
+      wx:elif="{{routes.length === 0}}"
+      class="empty-state"
+    >没有找到相关路线</view>
+
+    <view wx:else class="route-grid">
+      <view
+        class="route-card"
+        wx:for="{{routes}}"
+        wx:key="routeId"
+        data-index="{{index}}"
+        bindtap="selectRoute"
+      >
+        <image
+          wx:if="{{item.imageUrl}}"
+          class="route-image"
+          src="{{item.imageUrl}}"
+          mode="aspectFill"
+          data-index="{{index}}"
+          binderror="onRouteImageError"
+        />
+        <view wx:else class="image-placeholder">路线探索</view>
+
+        <view class="card-content">
+          <text class="route-title">{{item.title}}</text>
+          <text class="route-description">{{item.description}}</text>
+          <text class="route-count">{{item.checkpointCount}} 个打卡点</text>
+          <text wx:if="{{item.tagText}}" class="route-tags">
+            {{item.tagText}}
+          </text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>
