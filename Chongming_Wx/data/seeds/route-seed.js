@@ -5,57 +5,65 @@ const {
   createRouteVersion,
 } = require('../../models/route')
 
+const SAMPLE_PUBLISHED_AT = Date.UTC(2026, 8, 2, 8)
+
 function createInitialRouteVersions() {
   return [
     createRouteVersion({
       routeId: 'route-000001',
       ownerUserId: SYSTEM_ROUTE_OWNER_USER_ID,
       version: 1,
-      title: '东滩湿地亲子观察线',
-      description: '从观鸟步道出发，再前往开阔江堤观察湿地与云层。',
-      note: '沿途风力可能较大，建议准备防风外套和饮用水。',
-      coverImageId: '',
-      tagIds: ['湿地', '观鸟', '亲子'],
+      title: '崇明人文与夕阳一日线',
+      description: '上午了解崇明历史，下午逛文创空间，最后前往开阔水边等待落日。',
+      note: '三个地点间建议驾车移动，出发前可根据天气调整夕阳点的停留时间。',
+      coverImageId: '/assets/seed/checkpoints/shili-bund-sunset.jpg',
+      tagIds: ['历史', '文创', '夕阳'],
       stops: [
         {
-          checkpointId: 'sample_birdwatching_deck',
+          checkpointId: 'sample_liberation_landing_memorial',
           checkpointVersion: 1,
-          note: '建议保持安静，避免惊扰鸟类。',
+          note: '从纪念碑开始，简单了解崇明岛的解放历史。',
           trafficToNext: RouteTrafficMode.DRIVING,
         },
         {
-          checkpointId: 'sample_riverside_grass',
+          checkpointId: 'sample_m515_creative_center',
           checkpointVersion: 1,
-          note: '适合短暂停留并观察天气变化。',
+          note: '下午在文创中心逛展、体验手作或稍作休息。',
+          trafficToNext: RouteTrafficMode.DRIVING,
+        },
+        {
+          checkpointId: 'sample_shili_bund_sunset',
+          checkpointVersion: 1,
+          note: '傍晚到达水边，以观看夕阳结束行程。',
           trafficToNext: null,
         },
       ],
-      publishedAtEpochMillis: 0,
+      publishedAtEpochMillis: SAMPLE_PUBLISHED_AT,
     }),
     createRouteVersion({
       routeId: 'route-000002',
       ownerUserId: SYSTEM_ROUTE_OWNER_USER_ID,
       version: 1,
-      title: '森林湖畔轻松探索线',
-      description: '串联水杉林和湖畔栈道，适合散步、摄影和傍晚观景。',
-      note: '雨后木栈道可能湿滑，建议穿着防滑鞋。',
-      coverImageId: 'sample/checkpoint_metasequoia',
-      tagIds: ['森林', '湖景', '轻徒步'],
+      title: '昭苏玉湖与夏塔雪山线',
+      description: '串联昭苏山谷中的玉湖与夏塔景区，集中体验湖泊、森林和雪山景观。',
+      note: '山区天气变化较快，本路线仅作数据展示，实际出行需关注景区公告与路况。',
+      coverImageId: '/assets/seed/checkpoints/zhaosu-jade-lake.jpg',
+      tagIds: ['湖泊', '雪山', '自驾'],
       stops: [
         {
-          checkpointId: 'sample_metasequoia_road',
+          checkpointId: 'sample_zhaosu_jade_lake',
           checkpointVersion: 1,
-          note: '可以在林间道路拍摄纵深构图。',
-          trafficToNext: RouteTrafficMode.CYCLING,
+          note: '在湖边观察水色与山谷地貌，避免进入未开放区域。',
+          trafficToNext: RouteTrafficMode.DRIVING,
         },
         {
-          checkpointId: 'sample_lakeside_walk',
+          checkpointId: 'sample_xiata_scenic_area',
           checkpointVersion: 1,
-          note: '傍晚到达时更适合观察湖面光线。',
+          note: '以夏塔雪山和森林景观作为路线终点。',
           trafficToNext: null,
         },
       ],
-      publishedAtEpochMillis: 0,
+      publishedAtEpochMillis: SAMPLE_PUBLISHED_AT,
     }),
   ]
 }
