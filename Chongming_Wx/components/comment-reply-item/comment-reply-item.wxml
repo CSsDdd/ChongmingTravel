@@ -1,0 +1,59 @@
+<view class="reply-item">
+  <view wx:if="{{reply.isUnavailable}}" class="reply-deleted-placeholder">
+    {{reply.placeholderText}}
+  </view>
+
+  <block wx:else>
+  <view class="reply-header">
+    <image
+      wx:if="{{reply.avatarUrl && !avatarFailed}}"
+      class="reply-avatar"
+      src="{{reply.avatarUrl}}"
+      mode="aspectFill"
+      binderror="handleAvatarError"
+    />
+    <view wx:else class="reply-avatar reply-avatar-placeholder">
+      {{reply.authorInitial}}
+    </view>
+
+    <view class="reply-identity">
+      <text class="reply-author">{{reply.authorName}}</text>
+      <text class="reply-time">{{reply.publishedAtText}}</text>
+    </view>
+
+    <view class="reply-actions">
+      <view class="reply-action {{reply.isLiked ? 'reply-action-liked' : ''}}" role="button" catchtap="handleLike">
+        <image
+          class="reply-action-icon"
+          src="{{reply.isLiked ? '/assets/icons/like-filled.svg' : '/assets/icons/like-outline.svg'}}"
+          mode="aspectFit"
+        />
+        <text>{{reply.likeCount}}</text>
+      </view>
+      <view class="reply-action" role="button" catchtap="handleReply">
+        <image class="reply-action-icon" src="/assets/icons/reply-outline.svg" mode="aspectFit" />
+        <text>回复</text>
+      </view>
+      <view wx:if="{{reply.canDelete || reply.canReport}}" class="reply-action" role="button" catchtap="handleMore">
+        <image class="reply-action-icon" src="/assets/icons/more-horizontal.svg" mode="aspectFit" />
+      </view>
+    </view>
+  </view>
+
+  <view class="reply-body">
+    <text class="reply-text {{expanded ? 'reply-text-expanded' : ''}}">{{reply.content}}</text>
+    <text class="reply-text reply-text-measure">{{reply.content}}</text>
+    <view wx:if="{{canExpand}}" class="reply-expand" catchtap="toggleExpanded">
+      {{expanded ? '收起' : '展开'}}
+    </view>
+
+    <view wx:if="{{reply.replyReference && reply.replyReference.isUnavailable}}" class="reply-reference">
+      <text class="reply-reference-content">{{reply.replyReference.placeholderText}}</text>
+    </view>
+    <view wx:elif="{{reply.replyReference}}" class="reply-reference">
+      <text class="reply-reference-author">{{reply.replyReference.authorName}}：</text>
+      <text class="reply-reference-content">{{reply.replyReference.content}}</text>
+    </view>
+  </view>
+  </block>
+</view>

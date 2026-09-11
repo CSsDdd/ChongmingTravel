@@ -1,0 +1,81 @@
+<view class="comment-item">
+  <view wx:if="{{comment.isUnavailable}}" class="comment-deleted-placeholder">
+    {{comment.placeholderText}}
+  </view>
+
+  <block wx:else>
+  <view class="comment-header">
+    <image
+      wx:if="{{comment.avatarUrl && !avatarFailed}}"
+      class="comment-avatar"
+      src="{{comment.avatarUrl}}"
+      mode="aspectFill"
+      binderror="handleAvatarError"
+    />
+    <view wx:else class="comment-avatar comment-avatar-placeholder">
+      {{comment.authorInitial}}
+    </view>
+
+    <view class="comment-identity">
+      <text class="comment-author">{{comment.authorName}}</text>
+      <text class="comment-time">{{comment.publishedAtText}}</text>
+    </view>
+
+    <view class="comment-actions">
+      <view
+        class="comment-action {{comment.isLiked ? 'comment-action-liked' : ''}}"
+        role="button"
+        hover-class="comment-action-hover"
+        catchtap="handleLike"
+      >
+        <image
+          class="comment-action-icon"
+          src="{{comment.isLiked ? '/assets/icons/like-filled.svg' : '/assets/icons/like-outline.svg'}}"
+          mode="aspectFit"
+        />
+        <text class="comment-action-label">{{comment.likeCount}}</text>
+      </view>
+      <view
+        class="comment-action"
+        role="button"
+        hover-class="comment-action-hover"
+        catchtap="handleReply"
+      >
+        <image class="comment-action-icon" src="/assets/icons/reply-outline.svg" mode="aspectFit" />
+        <text class="comment-action-label">回复</text>
+      </view>
+      <view
+        wx:if="{{comment.canDelete || comment.canReport}}"
+        class="comment-action comment-more-action"
+        role="button"
+        hover-class="comment-action-hover"
+        catchtap="handleMore"
+      >
+        <image class="comment-action-icon" src="/assets/icons/more-horizontal.svg" mode="aspectFit" />
+      </view>
+    </view>
+  </view>
+
+  <view class="comment-body">
+    <text class="comment-text {{expanded ? 'comment-text-expanded' : ''}}">{{comment.content}}</text>
+    <text class="comment-text comment-text-measure">{{comment.content}}</text>
+    <button
+      wx:if="{{canExpand}}"
+      class="expand-button"
+      hover-class="expand-button-hover"
+      catchtap="toggleExpanded"
+    >{{expanded ? '收起' : '展开'}}</button>
+  </view>
+  </block>
+
+  <view wx:if="{{comment.replies && comment.replies.length}}" class="comment-replies">
+    <comment-reply-item
+      wx:for="{{comment.replies}}"
+      wx:key="id"
+      reply="{{item}}"
+      bindlike="forwardReplyLike"
+      bindreply="forwardReply"
+      bindmore="forwardReplyMore"
+    />
+  </view>
+</view>

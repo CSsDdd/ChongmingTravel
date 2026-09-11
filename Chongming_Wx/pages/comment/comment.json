@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "评论",
+  "usingComponents": {
+    "content-summary-card": "/components/content-summary-card/content-summary-card",
+    "comment-item": "/components/comment-item/comment-item"
+  }
+}

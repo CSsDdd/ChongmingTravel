@@ -1,0 +1,168 @@
+:host {
+  display: block;
+}
+
+.comment-item {
+  padding: 28rpx 4rpx;
+  border-bottom: 1rpx solid #dfe6df;
+}
+
+.comment-header {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+
+.comment-avatar {
+  width: 72rpx;
+  height: 72rpx;
+  flex: none;
+  border-radius: 50%;
+}
+
+.comment-avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background: #73957b;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.comment-identity {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 6rpx;
+  margin-left: 20rpx;
+}
+
+.comment-author {
+  overflow: hidden;
+  color: #26352c;
+  font-size: 27rpx;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.comment-time {
+  color: #929a94;
+  font-size: 21rpx;
+  white-space: nowrap;
+}
+
+.comment-actions {
+  display: flex;
+  width: auto;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 12rpx;
+  margin-left: 20rpx;
+}
+
+.comment-action {
+  display: flex;
+  width: auto;
+  min-width: 0;
+  height: 56rpx;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 6rpx;
+  margin: 0;
+  padding: 0 10rpx;
+  box-sizing: border-box;
+  border-radius: 28rpx;
+  color: #617068;
+  background: transparent;
+  font-size: 22rpx;
+  line-height: 1;
+}
+
+.comment-action-hover {
+  background: #e8eee8;
+}
+
+.comment-action-liked {
+  color: #d84a4a;
+}
+
+.comment-action-icon {
+  width: 31rpx;
+  height: 31rpx;
+}
+
+.comment-action-label {
+  color: inherit;
+  font-size: 21rpx;
+}
+
+.comment-more-action {
+  padding: 0 4rpx;
+}
+
+.comment-deleted-placeholder {
+  margin-left: 92rpx;
+  padding: 18rpx 0;
+  color: #9aa19c;
+  font-size: 25rpx;
+  line-height: 38rpx;
+}
+
+.comment-body {
+  position: relative;
+  margin-top: 18rpx;
+  margin-left: 92rpx;
+}
+
+.comment-text {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #3f4943;
+  font-size: 27rpx;
+  line-height: 42rpx;
+  overflow-wrap: break-word;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+}
+
+.comment-text-expanded {
+  display: block;
+  overflow: visible;
+}
+
+.comment-text-measure {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: block;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.expand-button {
+  margin: 10rpx 0 0;
+  padding: 0;
+  color: #2f6f4e;
+  background: transparent;
+  font-size: 23rpx;
+  line-height: 36rpx;
+  text-align: left;
+}
+
+.expand-button::after {
+  border: 0;
+}
+
+.expand-button-hover {
+  opacity: 0.65;
+}
+
+.comment-replies {
+  margin-top: 24rpx;
+  margin-left: 92rpx;
+}

@@ -60,15 +60,8 @@ Page({
     }
   },
 
-  onTargetImageError(event) {
-    const index = Number(event.currentTarget.dataset.index)
-    if (Number.isInteger(index)) {
-      this.setData({ [`targets[${index}].imageUrl`]: '' })
-    }
-  },
-
   selectTarget(event) {
-    const target = this.data.targets[Number(event.currentTarget.dataset.index)]
+    const target = event.detail.content
     if (!target) {
       wx.showToast({ title: '没有找到该安排目标', icon: 'none' })
       return

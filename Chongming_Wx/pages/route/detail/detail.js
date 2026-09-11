@@ -1,4 +1,5 @@
 const checkpointRepository = require('../../../repositories/checkpoint-repository')
+const commentRepository = require('../../../repositories/comment-repository')
 const interactionRepository = require('../../../repositories/content-interaction-repository')
 const routeRepository = require('../../../repositories/route-repository')
 const userRepository = require('../../../repositories/user-repository')
@@ -6,6 +7,7 @@ const {
   InteractionActionType,
   InteractionTargetType,
 } = require('../../../models/content-interaction')
+const { CommentTargetType } = require('../../../models/comment')
 const { ScheduleTargetType } = require('../../../models/schedule')
 const { resolveImageUrl } = require('../../../utils/local-media')
 
@@ -74,6 +76,7 @@ Page({
     currentUserId: '',
     isLiked: false,
     isFavorited: false,
+    commentCount: 0,
     isInteractionBusy: false,
     isImportingSchedule: false,
     showShareDialog: false,
@@ -89,7 +92,31 @@ Page({
       return
     }
     this.shareRouteParams = { routeId, version }
+    this.commentTargetRef = {
+      type: CommentTargetType.ROUTE,
+      id: routeId,
+    }
     await this.loadRoute(routeId, version)
+    if (!this.data.missing) {
+      this.hasLoadedDetail = true
+      await this.refreshCommentCount()
+    }
+  },
+
+  onShow() {
+    if (this.hasLoadedDetail) this.refreshCommentCount()
+  },
+
+  async refreshCommentCount() {
+    if (!this.commentTargetRef) return
+    try {
+      const commentCount = await commentRepository.countByTarget(
+        this.commentTargetRef
+      )
+      this.setData({ commentCount })
+    } catch (error) {
+      wx.showToast({ title: error.message || '评论数量更新失败', icon: 'none' })
+    }
   },
 
   async loadRoute(routeId, version) {
@@ -162,6 +189,19 @@ Page({
     if (!available) return
     wx.navigateTo({
       url: `/pages/checkpoint/detail/checkpoint-detail?checkpointId=${encodeURIComponent(id)}&version=${version}`,
+    })
+  },
+
+  openComments() {
+    const route = this.data.route
+    if (!route) return
+
+    const query = [
+      `targetType=${CommentTargetType.ROUTE}`,
+      `targetId=${encodeURIComponent(route.routeId)}`,
+    ].join('&')
+    wx.navigateTo({
+      url: `/pages/comment/comment?${query}`,
     })
   },
 

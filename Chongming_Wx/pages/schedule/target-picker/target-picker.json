@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "选择安排目标"
+  "navigationBarTitleText": "选择安排目标",
+  "usingComponents": {
+    "content-summary-card": "/components/content-summary-card/content-summary-card"
+  }
 }

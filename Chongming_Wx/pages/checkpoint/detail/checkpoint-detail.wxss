@@ -217,3 +217,27 @@
   color: #737a74;
   font-size: 28rpx;
 }
+.comment-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 28rpx;
+  padding: 28rpx 4rpx;
+  border-top: 1rpx solid #dfe6df;
+  border-bottom: 1rpx solid #dfe6df;
+}
+
+.comment-entry-hover {
+  opacity: 0.65;
+}
+
+.comment-entry-title {
+  color: #24352b;
+  font-size: 29rpx;
+  font-weight: 600;
+}
+
+.comment-entry-description {
+  color: #7d8980;
+  font-size: 25rpx;
+}

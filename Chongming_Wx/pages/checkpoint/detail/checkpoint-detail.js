@@ -1,10 +1,12 @@
 const checkpointRepository = require('../../../repositories/checkpoint-repository')
+const commentRepository = require('../../../repositories/comment-repository')
 const interactionRepository = require('../../../repositories/content-interaction-repository')
 const userRepository = require('../../../repositories/user-repository')
 const {
   InteractionActionType,
   InteractionTargetType,
 } = require('../../../models/content-interaction')
+const { CommentTargetType } = require('../../../models/comment')
 const { withImageUrl } = require('../../../utils/local-media')
 const {
   ScheduleTargetType
@@ -15,6 +17,7 @@ Page({
     currentUserId: '',
     isLiked: false,
     isFavorited: false,
+    commentCount: 0,
     isInteractionBusy: false,
     showShareDialog: false,
     loading: true,
@@ -32,7 +35,31 @@ Page({
       return
     }
     this.shareCheckpointParams = { checkpointId, version }
+    this.commentTargetRef = {
+      type: CommentTargetType.CHECKPOINT,
+      id: checkpointId,
+    }
     await this.loadCheckpoint(checkpointId, version)
+    if (!this.data.missing) {
+      this.hasLoadedDetail = true
+      await this.refreshCommentCount()
+    }
+  },
+
+  onShow() {
+    if (this.hasLoadedDetail) this.refreshCommentCount()
+  },
+
+  async refreshCommentCount() {
+    if (!this.commentTargetRef) return
+    try {
+      const commentCount = await commentRepository.countByTarget(
+        this.commentTargetRef
+      )
+      this.setData({ commentCount })
+    } catch (error) {
+      wx.showToast({ title: error.message || '评论数量更新失败', icon: 'none' })
+    }
   },
 
   async loadCheckpoint(checkpointId, version) {
@@ -118,6 +145,19 @@ Page({
     } finally {
       this.setData({ isInteractionBusy: false })
     }
+  },
+
+  openComments() {
+    const checkpoint = this.data.checkpoint
+    if (!checkpoint) return
+
+    const query = [
+      `targetType=${CommentTargetType.CHECKPOINT}`,
+      `targetId=${encodeURIComponent(checkpoint.checkpointId)}`,
+    ].join('&')
+    wx.navigateTo({
+      url: `/pages/comment/comment?${query}`,
+    })
   },
 
   openShareDialog() {

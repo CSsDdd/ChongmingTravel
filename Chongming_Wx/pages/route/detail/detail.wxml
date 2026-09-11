@@ -126,6 +126,15 @@
           </view>
         </view>
 
+        <view
+          class="comment-entry"
+          hover-class="comment-entry-hover"
+          bindtap="openComments"
+        >
+          <text class="comment-entry-title">评论</text>
+          <text class="comment-entry-description">进入评论区 · {{commentCount}} 条</text>
+        </view>
+
         <button
           class="schedule-button"
           loading="{{isImportingSchedule}}"

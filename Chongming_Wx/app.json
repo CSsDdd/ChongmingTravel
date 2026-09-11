@@ -16,7 +16,8 @@
     "pages/checkpoint/picker/checkpoint-picker",
     "pages/route/editor/editor",
     "pages/route/picker/route-picker",
-    "pages/route/detail/detail"
+    "pages/route/detail/detail",
+    "pages/comment/comment"
   ],
   "window": {
     "navigationBarTextStyle": "black",
