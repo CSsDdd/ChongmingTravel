@@ -1,0 +1,29 @@
+<view
+  class="summary-card"
+  hover-class="{{interactive ? 'summary-card-hover' : 'none'}}"
+  bindtap="handleTap"
+>
+  <image
+    wx:if="{{content.imageUrl && !imageFailed}}"
+    class="summary-image"
+    src="{{content.imageUrl}}"
+    mode="aspectFill"
+    binderror="handleImageError"
+  />
+  <view wx:else class="summary-placeholder">户外探索</view>
+
+  <view class="summary-content">
+    <view class="summary-heading">
+      <text class="summary-title">{{content.title}}</text>
+      <view
+        wx:if="{{content.sourceLabel}}"
+        class="source-badge {{content.source === 'OWN_DRAFT' ? 'source-badge-draft' : ''}}"
+      >
+        <text class="source-badge-text">{{content.sourceLabel}}</text>
+      </view>
+    </view>
+    <text class="summary-meta">{{content.typeLabel}} · {{content.metaText}}</text>
+    <text class="summary-description">{{content.summary || '暂无简介'}}</text>
+    <text wx:if="{{content.tagText}}" class="summary-tags">{{content.tagText}}</text>
+  </view>
+</view>

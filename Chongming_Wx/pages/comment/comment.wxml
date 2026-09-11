@@ -1,0 +1,111 @@
+<view class="comment-page">
+  <view wx:if="{{!invalidTarget}}" class="target-bar">
+    <view wx:if="{{loadingTarget}}" class="target-loading">正在读取评论对象...</view>
+    <content-summary-card wx:else content="{{target}}" />
+  </view>
+
+  <view wx:if="{{!invalidTarget && !loadingTarget}}" class="comment-section">
+    <view wx:if="{{loadingComments}}" class="comment-state">
+      正在加载评论...
+    </view>
+    <view wx:elif="{{comments.length === 0}}" class="comment-state">
+      还没有评论，来写第一条吧
+    </view>
+    <view wx:else class="comment-list">
+      <comment-item
+        wx:for="{{comments}}"
+        wx:key="id"
+        comment="{{item}}"
+        bindlike="toggleCommentLike"
+        bindreply="openReplyComposer"
+        bindmore="openCommentActions"
+      />
+    </view>
+  </view>
+
+  <view wx:if="{{invalidTarget}}" class="page-placeholder">
+    <text class="placeholder-title">暂时无法打开评论区</text>
+    <text class="placeholder-description">没有找到对应的评论对象</text>
+  </view>
+
+  <view
+    wx:if="{{!invalidTarget && !loadingTarget && !reportPanelOpen}}"
+    class="comment-input-dock {{composerOpen ? 'comment-input-dock-expanded' : ''}}"
+  >
+    <view
+      wx:if="{{!composerOpen}}"
+      class="comment-input-entry"
+      hover-class="comment-input-entry-hover"
+      bindtap="openCommentComposer"
+    >
+      <text class="comment-input-placeholder">写下你的想法...</text>
+    </view>
+
+    <view wx:else class="comment-composer">
+      <view wx:if="{{replyToCommentId}}" class="reply-context">
+        回复 {{replyingToName}}
+      </view>
+      <textarea
+        class="comment-textarea"
+        value="{{commentContent}}"
+        focus="{{inputFocused}}"
+        disabled="{{isSubmittingComment}}"
+        maxlength="500"
+        cursor-spacing="24"
+        show-confirm-bar="{{false}}"
+        placeholder="{{replyToCommentId ? '写下回复...' : '写下你的想法...'}}"
+        bindinput="handleCommentInput"
+        bindblur="handleCommentBlur"
+      />
+      <view class="comment-composer-footer">
+        <view
+          class="comment-cancel-action"
+          hover-class="comment-footer-action-hover"
+          catchtap="cancelComment"
+        >取消</view>
+        <view
+          class="comment-send-action {{canSubmitComment && !isSubmittingComment ? 'comment-send-action-active' : ''}}"
+          hover-class="comment-footer-action-hover"
+          catchtap="submitComment"
+        >{{isSubmittingComment ? '发送中...' : '发送'}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{reportPanelOpen}}" class="report-mask" catchtap="closeReportPanel">
+    <view class="report-sheet" catchtap="stopPropagation">
+      <text class="report-title">举报评论</text>
+      <text class="report-description">请选择最符合的原因</text>
+
+      <view class="report-reasons">
+        <view
+          wx:for="{{reportReasonOptions}}"
+          wx:key="value"
+          class="report-reason {{selectedReportReason === item.value ? 'report-reason-selected' : ''}}"
+          data-reason="{{item.value}}"
+          catchtap="selectReportReason"
+        >
+          {{item.label}}
+        </view>
+      </view>
+
+      <textarea
+        class="report-detail"
+        value="{{reportDetail}}"
+        fixed="{{true}}"
+        disabled="{{isSubmittingReport}}"
+        maxlength="200"
+        placeholder="{{selectedReportReason === 'OTHER' ? '请说明具体情况' : '补充说明（选填）'}}"
+        bindinput="handleReportDetailInput"
+      />
+
+      <view class="report-footer">
+        <view class="report-cancel" catchtap="closeReportPanel">取消</view>
+        <view
+          class="report-submit {{canSubmitReport && !isSubmittingReport ? 'report-submit-active' : ''}}"
+          catchtap="submitCommentReport"
+        >{{isSubmittingReport ? '提交中...' : '提交举报'}}</view>
+      </view>
+    </view>
+  </view>
+</view>
